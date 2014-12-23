@@ -100,30 +100,8 @@ public class MainWindow extends JFrame {
 	 */
 	private void simpleViewArea(JSplitPane mainVerticalSplit) {
 		// bottom simple view area
-		JScrollPane simpleViewScrollPane = new JScrollPane();
-		mainVerticalSplit.setRightComponent(simpleViewScrollPane);
-		
-		// simple view tool bar
-		JToolBar toolBar = new JToolBar();
-		toolBar.setFloatable(false);
-		simpleViewScrollPane.setColumnHeaderView(toolBar);
-		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		toolBar.add(btnDelete);
-		
-		JButton btnMoveForward = new JButton("Move Forward");
-		toolBar.add(btnMoveForward);
-		
-		JButton btnMoveBackward = new JButton("Move Backward");
-		toolBar.add(btnMoveBackward);
-		
-		//add bottom display multiple pictures area
-		ImageGridViewArea imageGridViewArea = new ImageGridViewArea();
-		simpleViewScrollPane.setViewportView(imageGridViewArea);
+		JScrollPane simpleViewScrollPane = new ImageGridViewScrollPanel();
+		mainVerticalSplit.setRightComponent(simpleViewScrollPane);		
 	}
 
 	//picture edit and preview area

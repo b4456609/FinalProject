@@ -9,107 +9,55 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 public class ImageGridViewArea extends JPanel {
 
-	//private String path = "C:\\pic";
 	private ArrayList<PicContainer> pics;
 	private ArrayList<ThumbnailLabel> diplayedPic = new ArrayList<ThumbnailLabel>();
-	private ThumbnailLabel selectedPic;
+	private int selectedPicIndex = NULL_INDEX;
 	private MouseListener itemClick = new itemClick();
-	
+
+	public static int NULL_INDEX = -100;
 	
 	/**
 	 * Create the panel.
 	 */	
 	public ImageGridViewArea() {
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.addMouseListener(itemClick);
-		add(lblNewLabel);
-		
-		/**
-		 * Test
-		 
-		String output = "";
-		for(File name:files)
-			output += name.toString();		
-		
-		JTextArea txtrGdfgearea = new JTextArea();
-		txtrGdfgearea.setText(output);
-		add(txtrGdfgearea);
-		*/	
-		new Thread(){
 
-			/* (non-Javadoc)
-			 * @see java.lang.Thread#run()
-			 */
+		refresh();
+		/*new Thread(){
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				/*super.run();
-				File picFinder = new File(path);
-				File[] files =picFinder.listFiles();
-				for(File path:files){
-					ImageIcon pic = new ImageIcon(path.toString());
-					ThumbnailLabel aPic = new ThumbnailLabel(pic);
-					
-					tranferPreviewPic(aPic);
-					
-					//add to array list
-					pics.add(aPic);
-					
-					//set display size
-					aPic.setPreferredSize(new Dimension(200, 200));
-					
-					//display
-					add(aPic);
-					
-					
-				}
-				
-				
-
-				////////////////////////test
-
-				ThumbnailLabel aPic = new ThumbnailLabel(new ImageIcon("‪D:\\我的圖片\\Screenshots\\HDR001.png"));
-				//set display size
-				aPic.setPreferredSize(new Dimension(200, 200));
-				
-				//display
-				add(aPic);
-				
-				ThumbnailLabel aPic1 = new ThumbnailLabel(new ImageIcon("‪D:\\我的圖片\\Screenshots\\HDR002.png"));
-				//set display size
-				aPic.setPreferredSize(new Dimension(200, 200));
-				
-				//display
-				add(aPic1);*/
-				
-
-				getPicDisplay();
 				refresh();
 			}
 			
-		}.start();
-		
+		}.start();	*/
 
 	}
 	
-	private void refresh(){
+	public void refresh(){
 
+		// remove all component
 		this.removeAll();
 		this.revalidate();
 		this.repaint();
 		
+		//remove array list
 		diplayedPic.clear();
-	
+		
+		//get display pic from model
+		getPicDisplay();
+
+		int i = 1;
 		for(PicContainer pic:pics){
 			ImageIcon img = new ImageIcon(pic.getPicture().toString());
 			ThumbnailLabel aImg = new ThumbnailLabel(img);
@@ -119,12 +67,12 @@ public class ImageGridViewArea extends JPanel {
 			
 			//add to array list
 			diplayedPic.add(aImg);
-			
-			//transfer to edit area
-			tranferPreviewPic(aImg);
-			
+						
 			//set display size
 			aImg.setPreferredSize(new Dimension(200, 200));
+			
+			
+			setImgBorder(aImg, i++);
 			
 			//display
 			add(aImg);
@@ -145,51 +93,45 @@ public class ImageGridViewArea extends JPanel {
 			}
 		});
 	}
-
-	public void moveForward(){
-		int index = diplayedPic.indexOf(selectedPic);
-		
-		//no need to move forward
-		if(index == 0)
-			return;
-		
-		//save temp file
-		PicContainer temp1 = pics.get(index);
-		PicContainer temp2 = pics.get(index-1);
-		
-		pics.set(index - 1, temp1);
-		pics.set(index, temp2);
-
-		System.out.println("clicked");
-
-		refresh();
+	
+	public int getSelectedPicIndex() {
+		return selectedPicIndex;
 	}
 	
-	public void moveBackWard(){
-		int index = diplayedPic.indexOf(selectedPic);
-		
-		//no need to move forward
-		if(index == diplayedPic.size())
-			return;
-		
-		//save temp file
-		PicContainer temp1 = pics.get(index);
-		PicContainer temp2 = pics.get(index+1);
-		
-		pics.set(index + 1, temp1);
-		pics.set(index, temp2);
-
-		System.out.println("clicked");
-
-		refresh();
+	public void setSelectedPicIndex(int selectedPicIndex) {
+		if(selectedPicIndex == NULL_INDEX)
+			this.selectedPicIndex = NULL_INDEX;
+		else if(selectedPicIndex >= diplayedPic.size())
+			this.selectedPicIndex = diplayedPic.size() - 1;
+		else if(selectedPicIndex < 0)
+			this.selectedPicIndex = 0;
+		else
+			this.selectedPicIndex = selectedPicIndex;
+	}
+	
+	private void setImgBorder(ThumbnailLabel targetPic, int number){
+		if( number - 1== selectedPicIndex){
+			Border border = BorderFactory.createRaisedSoftBevelBorder();
+			TitledBorder title =  BorderFactory.createTitledBorder(border, "Capture" + number);
+			targetPic.setBorder(title);
+		}
+		else{
+			TitledBorder title;
+			title = BorderFactory.createTitledBorder("Capture" + number);
+			targetPic.setBorder(title);
+		}
 	}
 	
 	///mouse listener
 	private class itemClick extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			selectedPic = (ThumbnailLabel)e.getSource();
-			moveBackWard();
+			// get clicked pic
+			ThumbnailLabel targetPic = (ThumbnailLabel)e.getSource();			
+			
+			//get pic's index
+			selectedPicIndex = diplayedPic.indexOf(targetPic);
+			refresh();
 		}
 	}
 	
