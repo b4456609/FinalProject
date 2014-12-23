@@ -37,7 +37,7 @@ import java.awt.event.MouseEvent;
 public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
-
+	public static PicModel PIC_MODEL = new PicModel();
 	/**
 	 * Launch the application.
 	 */
@@ -59,7 +59,7 @@ public class MainWindow extends JFrame {
 	 */
 	public MainWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 788, 470);
 		
 		//set menu bar
 		mainMenuBar();
@@ -122,7 +122,8 @@ public class MainWindow extends JFrame {
 		toolBar.add(btnMoveBackward);
 		
 		//add bottom display multiple pictures area
-		simpleViewScrollPane.setViewportView(new ImageGridViewArea());
+		ImageGridViewArea imageGridViewArea = new ImageGridViewArea();
+		simpleViewScrollPane.setViewportView(imageGridViewArea);
 	}
 
 	//picture edit and preview area
@@ -138,7 +139,7 @@ public class MainWindow extends JFrame {
 		PicEditToolBar.setFloatable(false);
 		
 		
-		JButton panBtn = new JButton("Pan");
+		JButton panBtn = new JButton("Pen");
 		PicEditToolBar.add(panBtn);
 		
 		JButton eraserBtn = new JButton("Eraser");
