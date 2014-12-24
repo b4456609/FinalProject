@@ -38,6 +38,9 @@ public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
 	public static PicModel PIC_MODEL = new PicModel();
+	private JScrollPane commentArea;
+	private JScrollPane imageGridViewScrollPanel;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -100,8 +103,8 @@ public class MainWindow extends JFrame {
 	 */
 	private void simpleViewArea(JSplitPane mainVerticalSplit) {
 		// bottom simple view area
-		JScrollPane simpleViewScrollPane = new ImageGridViewScrollPanel();
-		mainVerticalSplit.setRightComponent(simpleViewScrollPane);		
+		imageGridViewScrollPanel = new ImageGridViewScrollPanel(commentArea);
+		mainVerticalSplit.setRightComponent(imageGridViewScrollPanel);
 	}
 
 	//picture edit and preview area
@@ -150,14 +153,8 @@ public class MainWindow extends JFrame {
 
 	//comment area
 	private void commentArea(JSplitPane splitPicuterComment) {
-		JScrollPane CommentscrollPane = new JScrollPane();
-		CommentscrollPane.setBorder(new TitledBorder(null, "Comment", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		splitPicuterComment.setRightComponent(CommentscrollPane);
-		
-		JTextArea txtrComment = new JTextArea();
-		txtrComment.setLineWrap(true);
-		txtrComment.setText("Type Comment Here!!");
-		CommentscrollPane.setViewportView(txtrComment);
+		commentArea = new CommentArea();
+		splitPicuterComment.setRightComponent(commentArea);
 	}
 
 	//main menu bar

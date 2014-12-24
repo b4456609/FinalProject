@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class PicModel {
 
-	private String path = "D:\\我的圖片\\screenshots";
+	//private String path = "D:\\我的圖片\\screenshots";
+	private String path = "C:\\Users\\Bernie\\git\\FinalProject\\src\\project\\java2014\\Bernie\\img";
 	private ArrayList<PicContainer> pics = new ArrayList<PicContainer>();
 
 	// test constructor
@@ -17,8 +18,8 @@ public class PicModel {
 	public PicModel(String path) {
 		this.path = path;
 		setPic();
-
 	}
+
 
 	// set picture form path
 	private void setPic() {
@@ -59,5 +60,12 @@ public class PicModel {
 		pics.remove(index);
 		return true;
 	}
-
+	
+	public void setText(int index, String comment){
+		pics.get(index).setComment(comment);
+	}
+	
+	public String getText(int index){
+		return pics.get(index).getComment();
+	}
 }

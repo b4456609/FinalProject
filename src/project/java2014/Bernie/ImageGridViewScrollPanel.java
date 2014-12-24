@@ -9,19 +9,27 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 public class ImageGridViewScrollPanel extends JScrollPane {
-	private final ImageGridViewArea imageGridViewArea = new ImageGridViewArea();
+	private final ImageGridViewArea imageGridViewArea;
 	private final JToolBar toolBar = new JToolBar();
 	private final JButton btnDelete = new JButton("Delete");
 	private final JButton btnMoveForward = new JButton("Move Forward");
 	private final JButton btnMoveBackward = new JButton("Move Backward");
 	private final ButtonHandler buttonHandler = new ButtonHandler();
+	private final JScrollPane commentscrollPane;
 
 	/**
 	 * Create the panel.
 	 */
-	public ImageGridViewScrollPanel() {
+	public ImageGridViewScrollPanel(JScrollPane commentscrollPane) {
+		// get the variable
+		this.commentscrollPane = commentscrollPane;
+		
+		// new image grid view area
+		this.imageGridViewArea = new ImageGridViewArea(commentscrollPane);
+		
 		// set tool bar
 		toolbar();
+		
 		// add bottom display multiple pictures area
 		this.setViewportView(imageGridViewArea);
 	}
@@ -54,7 +62,7 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 
 					// set index to -100
 					// not exist
-					imageGridViewArea.setSelectedPicIndex(imageGridViewArea.NULL_INDEX);
+					imageGridViewArea.setSelectedPicIndex(ImageGridViewArea.NULL_INDEX);
 					
 					// refresh
 					imageGridViewArea.refresh();
