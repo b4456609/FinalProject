@@ -16,16 +16,20 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 	private final JButton btnMoveBackward = new JButton("Move Backward");
 	private final ButtonHandler buttonHandler = new ButtonHandler();
 	private final JScrollPane commentscrollPane;
+	private final PicModel picModel;
 
 	/**
 	 * Create the panel.
 	 */
-	public ImageGridViewScrollPanel(JScrollPane commentscrollPane) {
+	public ImageGridViewScrollPanel(JScrollPane commentscrollPane, PicModel picModel) {
+		//set pic model
+		this.picModel = picModel;
+				
 		// get the variable
 		this.commentscrollPane = commentscrollPane;
 		
 		// new image grid view area
-		this.imageGridViewArea = new ImageGridViewArea(commentscrollPane);
+		this.imageGridViewArea = new ImageGridViewArea(commentscrollPane, picModel);
 		
 		// set tool bar
 		toolbar();
@@ -58,7 +62,7 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 
 			if (e.getSource() == btnDelete) {
 				// successful execute
-				if (MainWindow.PIC_MODEL.deleteItem(index)) {
+				if (picModel.deleteItem(index)) {
 
 					// set index to -100
 					// not exist
@@ -69,7 +73,7 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 
 				}
 			} else if (e.getSource() == btnMoveForward) {
-				if (MainWindow.PIC_MODEL.swap(index, index - 1)) {
+				if (picModel.swap(index, index - 1)) {
 
 					imageGridViewArea.setSelectedPicIndex(index - 1);
 
@@ -77,7 +81,7 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 					imageGridViewArea.refresh();
 				}
 			} else if (e.getSource() == btnMoveBackward) {
-				if (MainWindow.PIC_MODEL.swap(index, index + 1)) {
+				if (picModel.swap(index, index + 1)) {
 					// set new index = index + 1
 					imageGridViewArea.setSelectedPicIndex(index + 1);
 					

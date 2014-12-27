@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class PicModel {
 
-	//private String path = "D:\\我的圖片\\screenshots";
-	private String path = "C:\\Users\\Bernie\\git\\FinalProject\\src\\project\\java2014\\Bernie\\img";
+	private String path = "D:\\我的圖片\\screenshots";
+	//private String path = "C:\\Users\\Bernie\\git\\FinalProject\\src\\project\\java2014\\Bernie\\img";
 	private ArrayList<PicContainer> pics = new ArrayList<PicContainer>();
 
 	// test constructor

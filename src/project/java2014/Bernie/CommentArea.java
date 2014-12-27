@@ -6,9 +6,13 @@ import javax.swing.border.TitledBorder;
 
 public class CommentArea extends JScrollPane {
 	private final JTextArea textArea ;
+	private final PicModel picModel;
 	
 	//constructor
-	CommentArea(){
+	CommentArea(PicModel picModel){
+		
+		//set pic model
+		this.picModel = picModel;
 		
 		//title border
 		this.setBorder(new TitledBorder(null, "Comment", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -22,7 +26,7 @@ public class CommentArea extends JScrollPane {
 	public void getComment(int index){
 		if(index == ImageGridViewArea.NULL_INDEX)
 			return;
-		String comment = MainWindow.PIC_MODEL.getText(index);
+		String comment = picModel.getText(index);
 		textArea.setText(comment);
 	}
 	
@@ -30,6 +34,6 @@ public class CommentArea extends JScrollPane {
 		if(index == ImageGridViewArea.NULL_INDEX)
 			return;
 		String comment = textArea.getText();
-		MainWindow.PIC_MODEL.setText(index, comment);
+		picModel.setText(index, comment);
 	}
 }

@@ -37,9 +37,18 @@ import java.awt.event.MouseEvent;
 public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
-	public static PicModel PIC_MODEL = new PicModel();
+	private final PicModel picModel;
 	private JScrollPane commentArea;
 	private JScrollPane imageGridViewScrollPanel;
+	private JSplitPane mainVerticalSplit;
+	private JSplitPane splitPicuterComment;
+	private JPanel PicEditPanel;
+	private JMenuBar menuBar;
+	private JMenu mnExport;
+	private JMenuItem mntmPdf;	
+	private JMenuItem mntmWord;	
+	private JMenu mnSetting;	
+	private JMenuItem mntmSetting;
 	
 	/**
 	 * Launch the application.
@@ -62,8 +71,11 @@ public class MainWindow extends JFrame {
 	 */
 	public MainWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 788, 470);
+		setBounds(100, 100, 800, 470);
 		
+		//set data model
+		 picModel = new PicModel();
+		 
 		//set menu bar
 		mainMenuBar();
 		
@@ -72,109 +84,61 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
+		//initialize first for other view use
+		commentArea = new CommentArea(picModel);
 		
 		//call construct split panel
-		JSplitPane splitPane = mainSplitPane();
-		contentPane.add(splitPane, BorderLayout.CENTER);
+		mainSplitPane();
+		topSplitePanel();
+		
 	}
 
 	//main Vertical split
-	private JSplitPane mainSplitPane() {
-		JSplitPane mainVerticalSplit = new JSplitPane();
+	private void mainSplitPane() {
+		mainVerticalSplit = new JSplitPane();
 		mainVerticalSplit.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		//create simple view bottom area
-		simpleViewArea(mainVerticalSplit);
+		imageGridViewScrollPanel = new ImageGridViewScrollPanel(commentArea, picModel);
+		mainVerticalSplit.setRightComponent(imageGridViewScrollPanel);
 		
+		contentPane.add(mainVerticalSplit, BorderLayout.CENTER);
+	}
+	
+	private void topSplitePanel(){
 		//center picture and comment area
-		JSplitPane splitPicuterComment = new JSplitPane();
+		splitPicuterComment = new JSplitPane();
 		mainVerticalSplit.setLeftComponent(splitPicuterComment);
 		
-		//add picture edit and preview area
-		editPicArea(splitPicuterComment);
-		
 		//add comment area
-		commentArea(splitPicuterComment);
-		return mainVerticalSplit;
-	}
-
-	/**
-	 * @param mainVerticalSplit
-	 */
-	private void simpleViewArea(JSplitPane mainVerticalSplit) {
-		// bottom simple view area
-		imageGridViewScrollPanel = new ImageGridViewScrollPanel(commentArea);
-		mainVerticalSplit.setRightComponent(imageGridViewScrollPanel);
+		
+		splitPicuterComment.setRightComponent(commentArea);
+		
+		//add picture edit and preview area
+		editPicArea();
 	}
 
 	//picture edit and preview area
-	private void editPicArea(JSplitPane splitPicuterComment) {
-		JPanel PicEditPanel = new JPanel();
+	private void editPicArea() {
+		PicEditPanel = new PicEditArea();
 		splitPicuterComment.setLeftComponent(PicEditPanel);
-		
-		//Picture Edit Tool bar
-		JToolBar PicEditToolBar = new JToolBar();
-		PicEditToolBar.setBorder(UIManager.getBorder("ToolBar.border"));
-		PicEditToolBar.setAlignmentX(Component.LEFT_ALIGNMENT);
-		PicEditToolBar.setOrientation(SwingConstants.VERTICAL);
-		PicEditToolBar.setFloatable(false);
-		
-		
-		JButton panBtn = new JButton("Pen");
-		PicEditToolBar.add(panBtn);
-		
-		JButton eraserBtn = new JButton("Eraser");
-		PicEditToolBar.add(eraserBtn);
-		
-		
-		//Display preview image
-		JLabel lblPicture = new JLabel("Picture");
-		
-		lblPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblPicture.setForeground(Color.BLACK);
-		
-		
-		//Group layout
-		GroupLayout gl_PicEditPanel = new GroupLayout(PicEditPanel);
-		gl_PicEditPanel.setHorizontalGroup(
-			gl_PicEditPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_PicEditPanel.createSequentialGroup()
-					.addComponent(PicEditToolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblPicture, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
-		);
-		gl_PicEditPanel.setVerticalGroup(
-			gl_PicEditPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(lblPicture, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-				.addComponent(PicEditToolBar, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-		);
-		PicEditPanel.setLayout(gl_PicEditPanel);
-	}
-
-	//comment area
-	private void commentArea(JSplitPane splitPicuterComment) {
-		commentArea = new CommentArea();
-		splitPicuterComment.setRightComponent(commentArea);
 	}
 
 	//main menu bar
 	private void mainMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
+		mnExport = new JMenu("Export");
+		mntmPdf = new JMenuItem("PDF");
+		mntmWord = new JMenuItem("Word");
+		mnSetting = new JMenu("Setting");
+		mntmSetting = new JMenuItem("Setting");
+		
 		setJMenuBar(menuBar);
 		
-		JMenu mnExport = new JMenu("Export");
-		menuBar.add(mnExport);
-		
-		JMenuItem mntmPdf = new JMenuItem("PDF");
-		mnExport.add(mntmPdf);
-		
-		JMenuItem mntmWord = new JMenuItem("Word");
-		mnExport.add(mntmWord);
-		
-		JMenu mnSetting = new JMenu("Setting");
-		menuBar.add(mnSetting);
-		
-		JMenuItem mntmSetting = new JMenuItem("Setting");
+		menuBar.add(mnExport);		
+		mnExport.add(mntmPdf);	
+		mnExport.add(mntmWord);		
+		menuBar.add(mnSetting);		
 		mnSetting.add(mntmSetting);
 	}
 }

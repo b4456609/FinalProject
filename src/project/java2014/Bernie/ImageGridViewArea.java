@@ -26,16 +26,19 @@ public class ImageGridViewArea extends JPanel {
 	private ArrayList<ThumbnailLabel> diplayedPic = new ArrayList<ThumbnailLabel>();
 	private int selectedPicIndex = NULL_INDEX;
 	private MouseListener itemClick = new itemClick();
+	private final PicModel picModel;
 
 	public static int NULL_INDEX = -100;
-	private final JScrollPane commentscrollPane;
+	private final JScrollPane commentArea;
 	
 	/**
 	 * Create the panel.
 	 */	
-	public ImageGridViewArea(JScrollPane commentscrollPane) {
-		
-		this.commentscrollPane = commentscrollPane;
+	public ImageGridViewArea(JScrollPane commentArea, PicModel picModel) {
+		//set pic model
+		this.picModel = picModel;
+
+		this.commentArea = commentArea;
 
 		refresh();
 		/*new Thread(){
@@ -84,7 +87,7 @@ public class ImageGridViewArea extends JPanel {
 	}
 	
 	private void getPicDisplay(){
-		pics = MainWindow.PIC_MODEL.getPic();
+		pics = picModel.getPic();
 	}
 
 	public int getSelectedPicIndex() {
@@ -114,7 +117,7 @@ public class ImageGridViewArea extends JPanel {
 			targetPic.setBorder(title);
 		}
 	}
-	
+		
 	///mouse listener
 	private class itemClick extends MouseAdapter {
 		@Override
@@ -122,12 +125,12 @@ public class ImageGridViewArea extends JPanel {
 			// get clicked pic
 			ThumbnailLabel targetPic = (ThumbnailLabel)e.getSource();			
 			
-			//((CommentArea)commentscrollPane).setComment(selectedPicIndex);
+			((CommentArea) commentArea).setComment(selectedPicIndex);
 			
 			//get pic's index
 			selectedPicIndex = diplayedPic.indexOf(targetPic);
 			
-			//((CommentArea)commentscrollPane).getComment(selectedPicIndex);
+			((CommentArea)commentArea).getComment(selectedPicIndex);
 			refresh();
 		}
 	}
