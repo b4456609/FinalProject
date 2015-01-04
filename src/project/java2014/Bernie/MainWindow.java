@@ -15,20 +15,31 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
+
 import java.awt.GridLayout;
+
 import javax.swing.BoxLayout;
+
 import java.awt.Dimension;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
+
 import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
 import java.awt.Component;
+
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
+
+import setting.export.actionTest;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -49,12 +60,14 @@ public class MainWindow extends JFrame {
 	private JMenuItem mntmWord;	
 	private JMenu mnSetting;	
 	private JMenuItem mntmSetting;
+	private actionTest a;
 
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow() {
+		actionTest a = new actionTest();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 470);
 		
@@ -117,6 +130,27 @@ public class MainWindow extends JFrame {
 		mntmWord = new JMenuItem("Word");
 		mnSetting = new JMenu("Setting");
 		mntmSetting = new JMenuItem("Setting");
+		mntmSetting.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	try
+				{
+				    org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
+				    UIManager.put("RootPane.setupButtonVisible", false);
+				    // 改变InsetsUIResource参数的值即可实现 设置BeantuEye外观下JTabbedPane的左缩进
+				    UIManager.put("TabbedPane.tabAreaInsets", new javax.swing.plaf.InsetsUIResource(3,0,2,20));
+
+				    //设置属性即可：true表示使用ToolBar.background颜色实现纯
+				    //色填充背景，BeautyEye中此属性默认是false
+				    UIManager.put("ToolBar.isPaintPlainBackground", Boolean.TRUE);
+				}
+				catch(Exception exception)
+				{
+				    // TODO exception
+				}
+				actionTest a = new actionTest();
+				
+		    }
+		});
 		
 		setJMenuBar(menuBar);
 		
