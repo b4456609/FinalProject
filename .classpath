@@ -17,6 +17,6 @@
 	<classpathentry kind="lib" path="lib/itextpdf-5.5.4.jar"/>
 	<classpathentry kind="lib" path="lib/beautyeye_lnf.jar"/>
 	<classpathentry kind="lib" path="lib/gif4j_pro_trial_2.3.jar"/>
-	<classpathentry kind="lib" path="lib/jintellitype-1.3.9.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jintellite"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
