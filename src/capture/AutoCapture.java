@@ -6,41 +6,45 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
 
+import setting.export.SettingParameter;
 
+public class AutoCapture extends Capture {
 
-public class AutoCapture  extends Capture{ 
-    
+	public AutoCapture(SettingParameter setting) {
+		super(setting);
+		// TODO Auto-generated constructor stub
+	}
 
-   void start(){
-        catchTime();
-        createFolder();  
-        mySignal();
-        getautoSecond();
-        
-        if(mysignal){     //pause or not
-            while(mysignal)
-                try{
-                    Thread.sleep(1000);//?»è…¦?«å?ä¸????
-                    System.out.println("stop");
-                }catch(Exception e){}
-        }
-        else{
-            if(true/*ä»¥ç???/){
-                try{
-                    catcher();
-                    Thread.sleep(autoSecond * 1000);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-           
-            }
-            else{    //ä»¥é???
-                //ç¼ºé?è£?
-            }
-        }
-    } 
-        
+	void start() {
+		catchTime();
+		createFolder();
+		mySignal();
+		getautoSecond();
+
+		if (mysignal) { // pause or not
+			while (mysignal)
+				try {
+					Thread.sleep(1000);// ¹q¸£¼È°±¤@¬íÄÁ
+					System.out.println("stop");
+				} catch (Exception e) {
+				}
+		} else {
+			if (true/* ¥H¬í¼Æ */) {
+				while (true) {
+					try {
+						catcher();
+						Thread.sleep(autoSecond * 1000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			} else { // ¥HÂIÀ»
+				// ¯Ê³o¸Ì
+			}
+		}
+	}
+
 }
-

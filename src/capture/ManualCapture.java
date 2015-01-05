@@ -1,10 +1,20 @@
 package capture;
 
+import setting.export.SettingParameter;
+
 
 public class ManualCapture extends Capture{
 
-    
-    void start(){
+	private SettingParameter setting;
+	
+    public ManualCapture(SettingParameter setting) {
+    	
+		super(setting);
+		this.setting = setting;
+		// TODO Auto-generated constructor stub
+	}
+
+	void start(){
         catchTime();
         createFolder();  
         mySignal();
@@ -21,7 +31,7 @@ public class ManualCapture extends Capture{
         }
         else{
             try{                
-                HotkeyTest key = new HotkeyTest();   
+                HotkeyTest key = new HotkeyTest(setting);   
                 key.initHotkey();
             }catch(Exception e){
                 e.printStackTrace();

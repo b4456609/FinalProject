@@ -1,9 +1,14 @@
 package capture;
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.lang.*;
+
 import javax.swing.ImageIcon;
+
+import setting.export.SettingParameter;
 
 public class SmallTool extends JFrame
 {
@@ -11,10 +16,14 @@ public class SmallTool extends JFrame
 	private JButton stopButton;
 	private JButton screenCutButton;
 	private JButton settingButton;
+	private SettingParameter settingP;
 	
-	public SmallTool()
+	public SmallTool(SettingParameter settingP)
 	{
 		super("SmallTool");
+		
+		this.settingP = settingP;
+		
 		setLayout(new FlowLayout());
 		
 		Icon start = new ImageIcon( "src/start.jpg");
@@ -45,6 +54,8 @@ public class SmallTool extends JFrame
 		public void actionPerformed( ActionEvent click)
 		{
 			System.out.printf("Start.");
+			AutoCapture autoCapture =  new AutoCapture(settingP);
+			autoCapture.start();
 		}
 	}
 	
@@ -61,6 +72,8 @@ public class SmallTool extends JFrame
 		public void actionPerformed( ActionEvent click)
 		{
 			System.out.printf("ScreenCut.");
+			ManualCapture manualCapture =  new ManualCapture(settingP);
+			manualCapture.start();
 		}
 	}
 	

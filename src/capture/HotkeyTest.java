@@ -1,5 +1,7 @@
 package capture;
 
+import setting.export.SettingParameter;
+
 import com.melloware.jintellitype.HotkeyListener;  
 import com.melloware.jintellitype.JIntellitype;  
 
@@ -7,7 +9,12 @@ import com.melloware.jintellitype.JIntellitype;
 public class HotkeyTest extends Capture implements HotkeyListener {  
     
 
-    static final int KEY_1 = 65;   //A
+    public HotkeyTest(SettingParameter setting) {
+		super(setting);
+		// TODO Auto-generated constructor stub
+	}
+
+	static final int KEY_1 = 65;   //A
     static final int KEY_2 = 90;   //Z
     
     @Override

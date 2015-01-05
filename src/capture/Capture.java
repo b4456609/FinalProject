@@ -15,14 +15,14 @@ import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 
+import setting.export.SettingParameter;
 import setting.export.actionTest;
 
 
 public class Capture {
     
-	 actionTest setting = new actionTest();
      private String storagePath;     
-     private String filePath;
+     //private String filePath;
      private String imageFormat;  
      private int fileName;
      int num = 1; 
@@ -31,16 +31,23 @@ public class Capture {
      
      int autoSecond; 
      
-     
-     
+     private SettingParameter setting;
      Scanner scanner = new Scanner(System.in);
      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
      
+     
+     public Capture(SettingParameter setting){
+    	 if(setting == null)
+    		 System.out.println("nULL");
+    	 this.setting = setting;
+    	 this.storagePath = setting.getPath();
+     }
+          
      void data(int fileName, String imageFormat){
-    	storagePath = setting.getPath();
+    	//storagePath = setting.getPath();
         this.fileName = fileName;
         this.imageFormat = imageFormat;
-        this.storagePath = storagePath;
+        
      }        
      
      void catcher(){
@@ -58,7 +65,9 @@ public class Capture {
      }
     
      void createFolder(){
-        File f = new File( filePath + "\\" + sdate );
+    	System.out.println( "\n" + storagePath + "\n" + sdate );
+    	 
+        File f = new File( storagePath + sdate );
         if (f.mkdir()) {
             System.out.println("success");
         } else {
@@ -69,7 +78,7 @@ public class Capture {
          try {
              BufferedImage screen = (new Robot()).createScreenCapture(new Rectangle(0,0,(int)screenSize.getWidth(),(int)screenSize.getHeight()));
              String name = this.fileName + "." + this.imageFormat;             
-             ImageIO.write(screen, this.imageFormat, new File(storagePath + name));            
+             ImageIO.write(screen, this.imageFormat, new File(storagePath + sdate + "/" + name));            
          } catch (AWTException | IOException e) {
             System.out.println("Wrong \n" + e.getMessage());
         }
@@ -86,7 +95,7 @@ public class Capture {
      }
      
 	 String getPath(){
-         return (filePath + "\\" +  sdate + "\\");
+         return (storagePath +  sdate + "\\");
      }
      
 }
