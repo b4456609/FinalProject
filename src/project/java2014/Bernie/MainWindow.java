@@ -38,12 +38,19 @@ import java.awt.Component;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 
+import com.itextpdf.text.DocumentException;
+
+import setting.export.ExportGIF;
+import setting.export.PDF;
+import setting.export.SettingParameter;
+import setting.export.WordDemo;
 import setting.export.actionTest;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class MainWindow extends JFrame {
 
@@ -57,17 +64,19 @@ public class MainWindow extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu mnExport;
 	private JMenuItem mntmPdf;	
-	private JMenuItem mntmWord;	
+	private JMenuItem mntmWord;
+	private JMenuItem mntmGif;	
 	private JMenu mnSetting;	
 	private JMenuItem mntmSetting;
-	private actionTest a;
+	
+	private SettingParameter settingParameter;
 
 
 	/**
 	 * Create the frame.
 	 */
-	public MainWindow() {
-		actionTest a = new actionTest();
+	public MainWindow(SettingParameter settingParameter) {
+		this.settingParameter = settingParameter;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 470);
 		
@@ -127,7 +136,40 @@ public class MainWindow extends JFrame {
 		menuBar = new JMenuBar();
 		mnExport = new JMenu("Export");
 		mntmPdf = new JMenuItem("PDF");
+		
+		mntmPdf.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	try {
+					new PDF(picModel.getPics(), settingParameter);
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+		    }
+		});
+		
 		mntmWord = new JMenuItem("Word");
+		
+		mntmWord.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+					new WordDemo(picModel.getPics(), settingParameter);
+		    }
+		});
+		
+		mntmGif = new JMenuItem("Gif");
+		mntmGif.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {	    	
+					try {
+						new ExportGIF(picModel.getPics(), settingParameter);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		    }
+		});
+		
 		mnSetting = new JMenu("Setting");
 		mntmSetting = new JMenuItem("Setting");
 		mntmSetting.addActionListener(new ActionListener() {
@@ -143,11 +185,11 @@ public class MainWindow extends JFrame {
 				    //色填充背景，BeautyEye中此属性默认是false
 				    UIManager.put("ToolBar.isPaintPlainBackground", Boolean.TRUE);
 				}
-				catch(Exception exception)
+				catch(Exception ex)
 				{
 				    // TODO exception
 				}
-				actionTest a = new actionTest();
+				actionTest a = new actionTest(settingParameter);
 				
 		    }
 		});
@@ -156,7 +198,8 @@ public class MainWindow extends JFrame {
 		
 		menuBar.add(mnExport);		
 		mnExport.add(mntmPdf);	
-		mnExport.add(mntmWord);		
+		mnExport.add(mntmWord);	
+		mnExport.add(mntmGif);
 		menuBar.add(mnSetting);		
 		mnSetting.add(mntmSetting);
 	}

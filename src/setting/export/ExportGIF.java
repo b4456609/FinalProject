@@ -17,21 +17,28 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.*;
 
+import project.java2014.Bernie.PicContainer;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ExportGIF
 {
-	public static void main(String args[]) throws IOException
+	public ExportGIF(ArrayList<PicContainer> pics, SettingParameter setting) throws IOException
 	{
-		BufferedImage[] imageArray = new BufferedImage[3];
-		File GIFImage = new File("E:/javatest/GIFImage.gif");
+		BufferedImage[] imageArray = new BufferedImage[pics.size()];
+		File GIFImage = new File(setting.getPath() +"/GIFImage.gif");
 		
-		
-		for (int i = 0; i < 3; i++)
+		int i = 0;
+		for (PicContainer pic : pics) 
 		{
-			String imagePath = "E:/javatest/" + (i+3) + ".png";
-			imageArray[i] = ImageIO.read(new File(imagePath));
+			try {
+				imageArray[i++] = ImageIO.read(pic.getPicture());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		//addTextWatermarkToGif(imageArray, GIFImage, "dskjfhlsdjkfhlkd");
@@ -42,10 +49,10 @@ public class ExportGIF
 	
 	public static void saveImageArrayAsAnimatedGif(BufferedImage[] images, File fileToSave) throws IOException
 	{
-        // ?µè?ä¸??GIFImage
+        // ?ï¿½ï¿½?ï¿½??GIFImage
         GifImage gifImage = new GifImage();
         
-        // è¨­å?æ¯å¼µ?“é?ç§’æ•¸(å¾®ç? 100 = 1 sec)
+        // è¨­ï¿½?æ¯å¼µ?ï¿½ï¿½?ç§’æ•¸(å¾®ï¿½? 100 = 1 sec)
         gifImage.setDefaultDelay(50);
         
         // åµŒå…¥è¨»è§£
@@ -61,19 +68,19 @@ public class ExportGIF
 
 	public static void addTextWatermarkToGif(BufferedImage[] images, File fileToSave, String watermarkText)throws IOException
 	{
-		//æ°´å°?å??–ã?è®¾ç½®ï¼ˆå?ä½“ã??·å??å¤§å°ã?é¢œè‰²
-		TextPainter textPainter = new TextPainter(new Font("é»‘é?", Font.BOLD, 12));
+		//æ°´å°?ï¿½ï¿½??ï¿½ï¿½?è®¾ç½®ï¼ˆï¿½?ä½“ï¿½??ï¿½ï¿½??ï¿½å¤§å°ï¿½?é¢œè‰²
+		TextPainter textPainter = new TextPainter(new Font("é»‘ï¿½?", Font.BOLD, 12));
 		textPainter.setOutlinePaint(Color.RED);
 		BufferedImage renderedWatermarkText = textPainter.renderString(watermarkText, true);
 		
-		//?¾ç?å¯¹è±¡
+		//?ï¿½ï¿½?å¯¹è±¡
 		GifImage gf = GifDecoder.decode(fileToSave);
 		
-		//?·å??¾ç?å¤§å?
+		//?ï¿½ï¿½??ï¿½ï¿½?å¤§ï¿½?
 		int iw = gf.getScreenWidth();
 		int ih = gf.getScreenHeight();
 		
-		//?·å?æ°´å°å¤§å?
+		//?ï¿½ï¿½?æ°´å°å¤§ï¿½?
 		int tw = renderedWatermarkText.getWidth();
 		int th = renderedWatermarkText.getHeight();
 		
@@ -82,7 +89,7 @@ public class ExportGIF
 		p.x = iw - tw - 5;
 		p.y = ih - th - 4;
 		
-		//? æ°´??
+		//?ï¿½æ°´??
 		Watermark watermark = new Watermark(renderedWatermarkText, p); 
 	
 		gf = watermark.apply(GifDecoder.decode(fileToSave), true);

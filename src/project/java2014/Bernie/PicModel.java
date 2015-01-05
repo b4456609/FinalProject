@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class PicModel {
 
-	private String path = "D:\\我的圖片\\screenshots";
-	//private String path = "C:\\Users\\Bernie\\git\\FinalProject\\src\\project\\java2014\\Bernie\\img";
+	//private String path = "D:\\我的圖片\\screenshots";
+	private String path = "D:\\Download\\pic";
 	private ArrayList<PicContainer> pics = new ArrayList<PicContainer>();
 
 	// test constructor
@@ -25,15 +25,16 @@ public class PicModel {
 	private void setPic() {
 		File picFinder = new File(path);
 		File[] files = picFinder.listFiles();
-
+		if(files != null){
 		for (File picPath : files) {
 			// add to array list
 			pics.add(new PicContainer(picPath));
 		}
+		}
 	}
 
 	// get picture list
-	public ArrayList<PicContainer> getPic() {
+	public ArrayList<PicContainer> getPics() {
 		return pics;
 	}
 

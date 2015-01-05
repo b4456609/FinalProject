@@ -1,7 +1,10 @@
 package setting.export;
 
+// Setting Hotkey ¶Ç¥X¤@­Óchar
 import java.io.*;
 import java.util.ArrayList;
+
+import project.java2014.Bernie.PicContainer;
 
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BaseColor;
@@ -28,148 +31,139 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 
 public class PDF {
-		 //ç”¢ç”Ÿä¸­æ–‡å­—å‹
-	     private static Font fontBlackSmallCN; 
-		
-	     // ç”¢ç”Ÿå­—å‹,å­—é«”å¤§å°
-	     private static final Font smallFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-	     private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-	     private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-	     
-	     // è®€å–æ–‡å­—æª”
-	     private static String inputFile = "E:/javatest/memo0.txt" ;
-	     private static int counter = 0;
-	     // ç”¢ç”Ÿä¸€å€‹A4å¤§å°çš„PDFæª”æ¡ˆ
-	     private static Document document = new Document(PageSize.A4);
-	     
-	     public static void main(String[] args) throws DocumentException {
-	
-	      try {
-	       // ç”¢ç”Ÿä¸­æ–‡å­—å‹,å­—é«”å¤§å°
-	       BaseFont bfChinese = BaseFont.createFont("STSong-Light","UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-	       fontBlackSmallCN = new Font(bfChinese, 12, Font.BOLD, new BaseColor(0, 0, 0));       
-	       
-	       for ( ; counter < 3; counter++)
-	       {
-		       // å°‡è®€é€²ä¾†çš„æª”æ¡ˆæ”¾å…¥inputStreamä¸­
-		      // inputFile = "E:/javatest/memo" + counter + ".txt";
-		       FileReader inputStream = new FileReader(inputFile);
-		       
-		       // æ¯æ¬¡è®€å–ä¸€å€‹byteä¸Ÿå…¥filedata
-		       String filedata = "";
-		       while (inputStream.ready())
-		       {
-		    	   int word = inputStream.read();
-		    	   filedata += (char) word;
-		       }
-		       
-		/*
-		       // å¦ä¸€ç¨®è®€å–æ–¹æ³•       
-		       FileInputStream inputStream = new FileInputStream(inputFile);
-		       // å°‡æª”æ¡ˆæ–‡å­—å…§å®¹æ”¾å…¥buuferä¸­
-		       BufferedReader BufferedStream = new BufferedReader(new InputStreamReader(inputStream, "big5"));
-		       String filedata = "";  // ä¸²æ¥è³‡æ–™å…§å®¹
-		       String data;
-		       // æ¯æ¬¡è®€å–ä¸€è¡Œï¼Œä¸Ÿå…¥filedataä¸­ï¼Œå°‡æ–‡å­—ä¸²æ¥èµ·ä¾†
-		       do {
-		    	   data = BufferedStream.readLine();
-		    	   if (data == null)
-		    		   break;
-		       	   else 
-		    		   filedata += data + "\n";
-		       } while (true);
-		*/
-	       
-	      
-	       
-		       // å°‡documentæ”¾å…¥æŒ‡å®šè·¯å¾‘
-		       PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("E:/javatest/test2.pdf"));
-		       
-			   //int pages = 0;
-			   document.open();
-			   
-			   // è®€å–imageæª”æ¡ˆ
-			   Image image = Image.getInstance ("E:/javatest/1.png");
-			   image.setAlignment(Element.ALIGN_CENTER);
-			   
-			   // filedataæ”¾åˆ°paragraphçš„é‚£å±¤
-			   Paragraph paragraph = new Paragraph(filedata, fontBlackSmallCN);
-			   paragraph.setAlignment(Element.ALIGN_CENTER);
-			  
-			   // å¯«å…¥documentä¸­
-			   document.add(image);
-			   document.add(paragraph);
-			   //addEmptyLine(paragraph, 5);
-			   document.newPage();
-	       }
-	       
-	    // PDF æ–‡ä»¶å…§å®¹éƒ¨åˆ†
-		   addMetaDataTitle(document);
-		   document.close();
-	       
-		   /*
-		   Anchor anchor = new Anchor("æ¨™é¡Œä¸€", fontRedCN);
-		   anchor.setName("First Chapter");
-		
-		   Chapter catPart = new Chapter(new Paragraph(anchor), 1);
-		   Paragraph subPara = new Paragraph("Subcategory 1", subFont);
-		    
-		   Section subCatPart = catPart.addSection(subPara);
-		   subCatPart.add(new Paragraph(filedata));
-		   
-		   Paragraph paragraph = new Paragraph(filedata);
-		   subCatPart.add(paragraph);
-		   document.add(paragraph);
-		   */
-	    
-	      } catch (DocumentException e) {
-	    	  // TODO Auto-generated catch block
-	    	  e.printStackTrace();
-	      } catch (IOException e) {
-	    	  // TODO Auto-generated catch block
-	    	  e.printStackTrace();
-	      }
-	     }
-	
-	
-	     /**
-	      * æ–‡ä»¶å…§å®¹éƒ¨åˆ†
-	      * @param document
-	      */
-	     private static void addMetaDataTitle(Document document) {
-	
-		      // å¢åŠ æ¨™é¡Œ
-		      document.addTitle("æˆªåœ–å›");
-		      // å¢åŠ ä½œè€…
-		      document.addAuthor("ç¬¬ä¹çµ„è£½ä½œ");
-		      // å¢åŠ å»ºç«‹PDFæ™‚é–“ä»¥åŠä¿®æ”¹PDFæ—¥æœŸ
-		      document.addCreationDate();
-		      // å¢åŠ PDFä¸­çš„é—œéµå­—
-		      document.addKeywords("å¸Œæœ›é«˜åˆ†~~");
-		      // å¢åŠ PDFçš„ä¸»é¡Œ
-		      document.addSubject("å“¼å“¼");
-	     }
-	
-	     /**
-	      * æ›è¡Œ
-	      */
-	     private static void addEmptyLine(Paragraph paragraph, int number) {
-	      if (number != 0)
-	      {
-	    	  for (int i = 0; i < number; i++)
-	    		  paragraph.add(new Paragraph(" "));
-	      }
-	     }
-	
-	     /**
-	      * å¢åŠ ç©ºç™½
-	      */
-	     private static String addBlank(int blank)
-	     {
-		      StringBuilder bu = new StringBuilder();
-		      if( blank > 0 )
-		    	  for (int i = 0; i <= blank; i++)
-		    		  bu.append(" ");
-		      return bu.toString();
-	     }
-    }
+	// ²£¥Í¤¤¤å¦r«¬
+	private static Font fontBlackSmallCN;
+
+	// ²£¥Í¦r«¬,¦rÅé¤j¤p
+	private static final Font smallFont = new Font(Font.FontFamily.TIMES_ROMAN,
+			18, Font.BOLD);
+
+	// Åª¨ú¤å¦rÀÉ
+	private static String inputFile = "C:/Users/user/Desktop/JAVA/JAVA Project/javatest/memo0.txt";
+	private static int counter = 0;
+	// ²£¥Í¤@­ÓA4¤j¤pªºPDFÀÉ®×
+	private static Document document = new Document(PageSize.A4);
+
+	public PDF(ArrayList<PicContainer> pics, SettingParameter setting)
+			throws DocumentException {
+
+		try {
+			// ²£¥Í¤¤¤å¦r«¬,¦rÅé¤j¤p
+			BaseFont bfChinese = BaseFont.createFont("MHei-Medium",
+					"UniCNS-UCS2-H", BaseFont.NOT_EMBEDDED);
+			fontBlackSmallCN = new Font(bfChinese, 12, Font.BOLD,
+					new BaseColor(0, 0, 0));
+
+			// ±Ndocument©ñ¤J«ü©w¸ô®|
+			PdfWriter writer = PdfWriter.getInstance(document,
+					new FileOutputStream(setting.getPath() + "/test2.pdf"));
+			document.open();
+
+			for (PicContainer pic : pics) {
+				Image image = Image.getInstance(pic.getPicture().toString());
+				image.setAlignment(Element.ALIGN_CENTER);
+
+				// filedata©ñ¨ìparagraphªº¨º¼h
+				Paragraph paragraph = new Paragraph(pic.getComment(),
+						fontBlackSmallCN);
+				paragraph.setAlignment(Element.ALIGN_CENTER);
+
+				// ¼g¤Jdocument¤¤
+				document.add(image);
+				document.add(addEmptyLine(paragraph, 3));
+			}
+
+			// PDF ¤å¥ó¤º®e³¡¤À
+			addMetaDataTitle(document);
+			document.close();
+
+			/*
+			 * for ( ; counter < 3; counter++) { // ±NÅª¶i¨ÓªºÀÉ®×©ñ¤JinputStream¤¤
+			 * inputFile =
+			 * "C:\\Users\\user\\Desktop\\JAVA\\JAVA Project\\javatest\\memo" +
+			 * counter + ".txt"; FileReader inputStream = new
+			 * FileReader(inputFile);
+			 * 
+			 * // ¨C¦¸Åª¨ú¤@­Óbyte¥á¤Jfiledata String filedata = ""; while
+			 * (inputStream.ready()) { int word = inputStream.read(); filedata
+			 * += (char) word; }
+			 * 
+			 * 
+			 * 
+			 * 
+			 * // Åª¨úimageÀÉ®× inputFile =
+			 * "C:/Users/user/Desktop/JAVA/JAVA Project/javatest/" + counter +
+			 * ".png"; Image image = Image.getInstance (inputFile);
+			 * image.setAlignment(Element.ALIGN_CENTER);
+			 * 
+			 * // filedata©ñ¨ìparagraphªº¨º¼h Paragraph paragraph = new
+			 * Paragraph(filedata, fontBlackSmallCN);
+			 * paragraph.setAlignment(Element.ALIGN_CENTER);
+			 * 
+			 * // ¼g¤Jdocument¤¤ document.add(image);
+			 * document.add(addEmptyLine(paragraph, 3)); }
+			 * 
+			 * // PDF ¤å¥ó¤º®e³¡¤À addMetaDataTitle(document); document.close();
+			 */
+
+			/*
+			 * Anchor anchor = new Anchor("¼ĞÃD¤@", fontRedCN);
+			 * anchor.setName("First Chapter");
+			 * 
+			 * Chapter catPart = new Chapter(new Paragraph(anchor), 1);
+			 * Paragraph subPara = new Paragraph("Subcategory 1", subFont);
+			 * 
+			 * Section subCatPart = catPart.addSection(subPara);
+			 * subCatPart.add(new Paragraph(filedata));
+			 * 
+			 * Paragraph paragraph = new Paragraph(filedata);
+			 * subCatPart.add(paragraph); document.add(paragraph);
+			 */
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * ¤å¥ó¤º®e³¡¤À
+	 * 
+	 * @param document
+	 */
+	private static void addMetaDataTitle(Document document) {
+		// ¼W¥[¼ĞÃD
+		document.addTitle("ºI¹Ï§g");
+		// ¼W¥[§@ªÌ
+		document.addAuthor("²Ä¤E²Õ»s§@");
+		// ¼W¥[«Ø¥ßPDF®É¶¡¥H¤Î­×§ïPDF¤é´Á
+		document.addCreationDate();
+		// ¼W¥[PDF¤¤ªºÃöÁä¦r
+		document.addKeywords("§Æ±æ°ª¤À~~");
+		// ¼W¥[PDFªº¥DÃD
+		document.addSubject("­ó­ó");
+	}
+
+	/**
+	 * ´«¦æ
+	 */
+	private static Paragraph addEmptyLine(Paragraph paragraph, int number) {
+		if (number != 0)
+			for (int i = 0; i < number; i++)
+				paragraph.add(new Paragraph(" "));
+		return paragraph;
+	}
+
+	/**
+	 * ¼W¥[ªÅ¥Õ
+	 */
+	private static String addBlank(int blank) {
+		StringBuilder bu = new StringBuilder();
+		if (blank > 0)
+			for (int i = 0; i <= blank; i++)
+				bu.append(" ");
+		return bu.toString();
+	}
+}

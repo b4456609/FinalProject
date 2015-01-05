@@ -87,7 +87,7 @@ public class ImageGridViewArea extends JPanel {
 	}
 	
 	private void getPicDisplay(){
-		pics = picModel.getPic();
+		pics = picModel.getPics();
 	}
 
 	public int getSelectedPicIndex() {

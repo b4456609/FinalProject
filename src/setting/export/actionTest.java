@@ -24,9 +24,9 @@ public class actionTest extends JFrame {
 	private JRadioButton autoByTimeRadioButton = new JRadioButton("By Time", true);
 	private JRadioButton autoByStepRadioButton = new JRadioButton("By Step");
 	private ButtonGroup autoButtonGroup = new ButtonGroup();
-	private boolean autoMode = true; // auto mode 目前狀態(true for time)
+	//private boolean autoMode = true; // auto mode 目前狀態(true for time)
 	private JTextField autoByTimeDefaultSecText = new JTextField(2);
-	private int autoByTimeInterval;
+	//private int autoByTimeInterval;
 	
 	// tool bar 選項的panel
 	private JPanel autoPanel = new JPanel(new BorderLayout());
@@ -39,31 +39,33 @@ public class actionTest extends JFrame {
 	private JComboBox hotKeyScreenShotComboBox = new JComboBox();
 	private JPanel hotKeyStopPanel = new JPanel();
 	private JComboBox hotKeyStopComboBox = new JComboBox();
-	private int hotKeyScreenShotNumber;
-	private int hotKeyStopNumber;
+	//private int hotKeyScreenShotNumber;
+	//private int hotKeyStopNumber;
 	
 	// path
 	private JTextField defaultPathText = new JTextField("C:/");
-	private String savePathInput;
+	//private String savePathInput;
 
 	
 	// export
 	private JTextField exportDefaultSecText = new JTextField(2);
-	private int exportGIFInterval;
+	//private int exportGIFInterval;
 
 	private JFileChooser pathChoose = new JFileChooser();
-	
+	/*
 	private boolean lastAutoMode = true;
 	private int lastAutoByTimeInterval;
 	private int lastHotKeyScreenShotNumber =-1;
 	private int lastHotKeyStopNumber = -1;
 	private String lastSavePathInput = "C:/";
-	private int lastExportGIFInterval;
+	private int lastExportGIFInterval;*/
+	private SettingParameter parameters;
 
 	
-	public actionTest() {
+	public actionTest(final SettingParameter parameters) {
 		super("Setting");
 		
+		this.parameters = parameters;
 		/**创建一个具有指定的水平和垂直间隙的新卡片布局*/
 		card = new CardLayout(5, 5);
 		settingPanel = new JPanel(card); // JPanel的布局管理将被设置成CardLayout
@@ -133,6 +135,7 @@ public class actionTest extends JFrame {
 		autoByStepRadioButton.addItemListener(new RadioButtonHandler(false));
 		autoByTimeDefaultSecText.addActionListener(new TextFieldHandler());
 		//autoByTimeDefaultSecText.addKeyListener(new secTextFieldHandler());
+		//autoByTimeDefaultSecText.setText(parameters.getInterval());
 		
 		// hot key
 		// hot key - screen shot
@@ -200,21 +203,29 @@ public class actionTest extends JFrame {
                 if (state == JOptionPane.OK_OPTION)
                 {
                 	if (autoByTimeDefaultSecText.getText().length() > 0)
-                		autoByTimeInterval = Integer.parseInt(autoByTimeDefaultSecText.getText());
+                		parameters.setInterval(Integer.parseInt(autoByTimeDefaultSecText.getText()));
+                		//autoByTimeInterval = Integer.parseInt(autoByTimeDefaultSecText.getText());
                 	if (exportDefaultSecText.getText().length() > 0)
-                		exportGIFInterval = Integer.parseInt(exportDefaultSecText.getText());
+                		parameters.setGifInterval(Integer.parseInt(exportDefaultSecText.getText()));
+                		//exportGIFInterval = Integer.parseInt(exportDefaultSecText.getText());
     				
                 	getOuterClass().setVisible(false);
                 	getOuterClass().dispose();
                 }
                 else if(state == JOptionPane.NO_OPTION)
                 {
-                	autoMode = lastAutoMode;
+                	parameters.setAutoOption(parameters.getLastAutoOption());
+                	parameters.setInterval(parameters.getLastInterval());
+                	parameters.setCaptureHotKey(parameters.getLastCaptureHotKey());
+                	parameters.setPauseHotKey(parameters.getLastPauseHotKey());
+                	parameters.setPath(parameters.getLastPath());
+                	parameters.setGifInterval(parameters.getLastGifInterval());
+                	/*autoMode = lastAutoMode;
                 	autoByTimeInterval = lastAutoByTimeInterval;
                 	hotKeyScreenShotNumber = lastHotKeyScreenShotNumber;
                 	hotKeyStopNumber = lastHotKeyStopNumber;
                 	savePathInput = lastSavePathInput;
-                	exportGIFInterval = lastExportGIFInterval;
+                	exportGIFInterval = lastExportGIFInterval;*/
                 	getOuterClass().setVisible(false);
                 	getOuterClass().dispose();
                 }
@@ -241,10 +252,12 @@ public class actionTest extends JFrame {
 			autoByTimeDefaultSecText.setEditable(true);
 			if (event.getStateChange() == ItemEvent.SELECTED)
 			{	
-				lastAutoMode = autoMode;
-				autoMode = mode;
+				parameters.setLastAutoOption(parameters.getAutoOption());
+				parameters.setAutoOption(mode);
+				// lastAutoMode = autoMode;
+				// autoMode = mode;
 			}
-			if (autoMode == false)
+			if (parameters.getAutoOption() == false)
 				autoByTimeDefaultSecText.setEditable(false);
 				
 		}
@@ -260,23 +273,28 @@ public class actionTest extends JFrame {
 			// for export
 			if (event.getSource() == exportDefaultSecText)
 			{
-				lastExportGIFInterval = exportGIFInterval;
-				exportGIFInterval = Integer.parseInt(event.getActionCommand());
+				parameters.setLastGifInterval(parameters.getGifInterval());
+				parameters.setGifInterval(Integer.parseInt(event.getActionCommand()));
+				// lastExportGIFInterval = exportGIFInterval;
+				// exportGIFInterval = Integer.parseInt(event.getActionCommand());
 			}
 			
 			// for path
 			else if (event.getSource() == defaultPathText)
 			{
-				lastSavePathInput = savePathInput;
-				savePathInput = event.getActionCommand();
+				parameters.setLastPath(parameters.getPath());
+				parameters.setPath(event.getActionCommand());
+				// lastSavePathInput = savePathInput;
+				// savePathInput = event.getActionCommand();
 			}
 			
 			// for auto by time
 			else
 			{
-
-				lastAutoByTimeInterval = autoByTimeInterval;
-				autoByTimeInterval = Integer.parseInt(event.getActionCommand());
+				parameters.setLastInterval(parameters.getInterval());
+				parameters.setInterval(Integer.parseInt(event.getActionCommand()));
+				// lastAutoByTimeInterval = autoByTimeInterval;
+				// autoByTimeInterval = Integer.parseInt(event.getActionCommand());
 			}
 		}
 	}
@@ -308,17 +326,33 @@ public class actionTest extends JFrame {
 	    	{
 	    		String get = (String) hotKeyScreenShotComboBox.getSelectedItem();
 	    		if (get == "NONE")
-	    			hotKeyScreenShotNumber = -1;
+	    		{
+	    			parameters.setLastCaptureHotKey(parameters.getCaptureHotKey());
+	    			parameters.setCaptureHotKey(-1);
+	    			//hotKeyScreenShotNumber = -1;
+	    		}
 	    		else  // 全部轉成ASCII，包括數字
-	    			hotKeyScreenShotNumber = get.charAt(0);
+	    		{
+	    			parameters.setLastCaptureHotKey(parameters.getCaptureHotKey());
+	    			parameters.setCaptureHotKey(get.charAt(0));
+	    			//hotKeyScreenShotNumber = get.charAt(0);
+	    		}
 	    	}
 	    	else if (event.getSource() == hotKeyStopComboBox)
 	    	{
 	    		String get = (String) hotKeyStopComboBox.getSelectedItem();
 	    		if (get == "NONE")
-	    			hotKeyStopNumber = -1;
+	    		{
+	    			parameters.setLastPauseHotKey(parameters.getPauseHotKey());
+	    			parameters.setPauseHotKey(-1);
+	    			//hotKeyStopNumber = -1;
+	    		}
 	    		else  // 全部轉成ASCII，包括數字
-	    			hotKeyStopNumber = get.charAt(0);
+	    		{
+	    			parameters.setLastPauseHotKey(parameters.getPauseHotKey());
+	    			parameters.setPauseHotKey(get.charAt(0));
+	    			//hotKeyStopNumber = get.charAt(0);
+	    		}
 	    	}
 	    }
 	    
@@ -340,12 +374,14 @@ public class actionTest extends JFrame {
 		
 		public void setPath(String path)
 		{
-			lastSavePathInput = savePathInput;
-			savePathInput = path; 
+			parameters.setLastPath(parameters.getPath());
+			parameters.setPath(path);
+			// lastSavePathInput = savePathInput;
+			// savePathInput = path; 
 			defaultPathText.setText(path);
 		}
 	}
-	
+	/*
 	// get the value of auto mode
 	public boolean getAutoOption()
 	{
@@ -381,7 +417,7 @@ public class actionTest extends JFrame {
 	{
 		return hotKeyScreenShotNumber;
 	}
-	
+	*/
 	// get outer class Object
 	public actionTest getOuterClass()
 	{
@@ -405,7 +441,8 @@ public class actionTest extends JFrame {
 		{
 		    // TODO exception
 		}
-		actionTest a = new actionTest();
+		SettingParameter set= new SettingParameter();
+		actionTest a = new actionTest(set);
 	}
 
 }
