@@ -24,9 +24,7 @@ public class actionTest extends JFrame {
 	private JRadioButton autoByTimeRadioButton = new JRadioButton("By Time", true);
 	private JRadioButton autoByStepRadioButton = new JRadioButton("By Step");
 	private ButtonGroup autoButtonGroup = new ButtonGroup();
-	//private boolean autoMode = true; // auto mode 目前狀態(true for time)
 	private JTextField autoByTimeDefaultSecText = new JTextField(2);
-	//private int autoByTimeInterval;
 	
 	// tool bar 選項的panel
 	private JPanel autoPanel = new JPanel(new BorderLayout());
@@ -39,11 +37,10 @@ public class actionTest extends JFrame {
 	private JComboBox hotKeyScreenShotComboBox = new JComboBox();
 	private JPanel hotKeyStopPanel = new JPanel();
 	private JComboBox hotKeyStopComboBox = new JComboBox();
-	//private int hotKeyScreenShotNumber;
-	//private int hotKeyStopNumber;
+
 	
 	// path
-	private JTextField defaultPathText = new JTextField("C:/");
+	private JTextField defaultPathText = new JTextField();
 	//private String savePathInput;
 
 	
@@ -52,13 +49,7 @@ public class actionTest extends JFrame {
 	//private int exportGIFInterval;
 
 	private JFileChooser pathChoose = new JFileChooser();
-	/*
-	private boolean lastAutoMode = true;
-	private int lastAutoByTimeInterval;
-	private int lastHotKeyScreenShotNumber =-1;
-	private int lastHotKeyStopNumber = -1;
-	private String lastSavePathInput = "C:/";
-	private int lastExportGIFInterval;*/
+
 	private SettingParameter parameters;
 
 	
@@ -87,25 +78,25 @@ public class actionTest extends JFrame {
 		
 		// tool bar listener
 		/**下面是翻转到卡片布局的某个组件，可参考API中的文档*/
-		auto.addActionListener(new ActionListener(){ // 上一步的按钮动作
+		auto.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				card.show(settingPanel, "p1");
 			}
 		});
 		
-		hotKey.addActionListener(new ActionListener(){ // 下一步的按钮动作
+		hotKey.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				card.show(settingPanel, "p2");
 			}
 		});
 		
-		path.addActionListener(new ActionListener() { // 直接翻转到p_1
+		path.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				card.show(settingPanel, "p3");
 			}
 		});
 		
-		export.addActionListener(new ActionListener() { // 直接翻转到p_2
+		export.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				card.show(settingPanel, "p4");
 			}
@@ -134,8 +125,7 @@ public class actionTest extends JFrame {
 		autoByTimeRadioButton.addItemListener(new RadioButtonHandler(true));
 		autoByStepRadioButton.addItemListener(new RadioButtonHandler(false));
 		autoByTimeDefaultSecText.addActionListener(new TextFieldHandler());
-		//autoByTimeDefaultSecText.addKeyListener(new secTextFieldHandler());
-		//autoByTimeDefaultSecText.setText(parameters.getInterval());
+	autoByTimeDefaultSecText.setText(Integer.toString(parameters.getInterval()));
 		
 		// hot key
 		// hot key - screen shot
@@ -176,10 +166,13 @@ public class actionTest extends JFrame {
 		pathBrowse.addActionListener(new ButtonHandler());
 		pathBrowse.setActionCommand("browse..");
 		
+		defaultPathText.setText(parameters.getPath());
 		defaultPathText.addActionListener(new TextFieldHandler());
 		
 		// export
 		exportPanel.add(exportDefaultSecText);
+		
+		exportDefaultSecText.setText(Integer.toString(parameters.getGifInterval()));
 		// export listener
 		exportDefaultSecText.addActionListener(new TextFieldHandler());
 		
@@ -191,11 +184,9 @@ public class actionTest extends JFrame {
 		this.setResizable(false);
 		this.getContentPane().add(toolBar, BorderLayout.NORTH);
 		
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		this.addWindowListener(new WindowAdapter() {
-            //I skipped unused callbacks for readability
 
             @Override
             public void windowClosing(WindowEvent e) {
@@ -275,8 +266,6 @@ public class actionTest extends JFrame {
 			{
 				parameters.setLastGifInterval(parameters.getGifInterval());
 				parameters.setGifInterval(Integer.parseInt(event.getActionCommand()));
-				// lastExportGIFInterval = exportGIFInterval;
-				// exportGIFInterval = Integer.parseInt(event.getActionCommand());
 			}
 			
 			// for path
@@ -284,8 +273,6 @@ public class actionTest extends JFrame {
 			{
 				parameters.setLastPath(parameters.getPath());
 				parameters.setPath(event.getActionCommand());
-				// lastSavePathInput = savePathInput;
-				// savePathInput = event.getActionCommand();
 			}
 			
 			// for auto by time
@@ -293,29 +280,9 @@ public class actionTest extends JFrame {
 			{
 				parameters.setLastInterval(parameters.getInterval());
 				parameters.setInterval(Integer.parseInt(event.getActionCommand()));
-				// lastAutoByTimeInterval = autoByTimeInterval;
-				// autoByTimeInterval = Integer.parseInt(event.getActionCommand());
 			}
 		}
 	}
-		
-	/*public class secTextFieldHandler extends KeyAdapter
-	{
-		public void keyTyped(KeyEvent event)
-		{
-			if (event.getSource() == autoByTimeDefaultSecText)
-			{
-				int keyChar = event.getKeyCode();				
-				if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9)
-				{
-					lastAutoByTimeInterval = autoByTimeInterval;
-					autoByTimeInterval = keyChar;//Character.getNumericValue(keyChar);
-				}
-				else
-					event.consume(); //关键，屏蔽掉非法输入
-			}
-		}
-	}*/
 
 // Hot Key
 	public class ComboBoxHandler implements ActionListener 
@@ -329,13 +296,11 @@ public class actionTest extends JFrame {
 	    		{
 	    			parameters.setLastCaptureHotKey(parameters.getCaptureHotKey());
 	    			parameters.setCaptureHotKey(-1);
-	    			//hotKeyScreenShotNumber = -1;
 	    		}
 	    		else  // 全部轉成ASCII，包括數字
 	    		{
 	    			parameters.setLastCaptureHotKey(parameters.getCaptureHotKey());
 	    			parameters.setCaptureHotKey(get.charAt(0));
-	    			//hotKeyScreenShotNumber = get.charAt(0);
 	    		}
 	    	}
 	    	else if (event.getSource() == hotKeyStopComboBox)
@@ -345,13 +310,11 @@ public class actionTest extends JFrame {
 	    		{
 	    			parameters.setLastPauseHotKey(parameters.getPauseHotKey());
 	    			parameters.setPauseHotKey(-1);
-	    			//hotKeyStopNumber = -1;
 	    		}
 	    		else  // 全部轉成ASCII，包括數字
 	    		{
 	    			parameters.setLastPauseHotKey(parameters.getPauseHotKey());
 	    			parameters.setPauseHotKey(get.charAt(0));
-	    			//hotKeyStopNumber = get.charAt(0);
 	    		}
 	    	}
 	    }
@@ -376,48 +339,10 @@ public class actionTest extends JFrame {
 		{
 			parameters.setLastPath(parameters.getPath());
 			parameters.setPath(path);
-			// lastSavePathInput = savePathInput;
-			// savePathInput = path; 
 			defaultPathText.setText(path);
 		}
 	}
-	/*
-	// get the value of auto mode
-	public boolean getAutoOption()
-	{
-		return autoMode;
-	}
 	
-	// get the value of GIF time interval
-	public int getGifInterval()
-	{
-		return exportGIFInterval;
-	}
-	
-	// get the value of save path
-	public String getPath()
-	{
-		return savePathInput;
-	}
-	
-	// get the interval of auto by time
-	public int getInterval()
-	{
-		return autoByTimeInterval;
-	}
-	
-	// get the hot key character of stop 
-	public int getPauseHotKey()
-	{
-		return hotKeyStopNumber;
-	}
-	
-	// get the hot key character of screen shot
-	public int getCaptureHotKey()
-	{
-		return hotKeyScreenShotNumber;
-	}
-	*/
 	// get outer class Object
 	public actionTest getOuterClass()
 	{

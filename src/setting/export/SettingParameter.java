@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 public class SettingParameter extends JFrame {
 	// auto panel ���
 	private boolean autoMode = true; // auto mode �桀����(true for time)
-	private int autoByTimeInterval = 1;
+	private int autoByTimeInterval = 5;
 
 	// hot key
 	private int hotKeyScreenShotNumber = -1;

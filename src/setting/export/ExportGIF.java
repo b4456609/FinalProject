@@ -34,67 +34,53 @@ public class ExportGIF
 		for (PicContainer pic : pics) 
 		{
 			try {
-				imageArray[i++] = ImageIO.read(pic.getPicture());
+				imageArray[i] = ImageIO.read(pic.getPicture());
+				imageArray[i] = addTextWatermarkToImage(imageArray[i++], pic.getComment());
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		//addTextWatermarkToGif(imageArray, GIFImage, "dskjfhlsdjkfhlkd");
 		saveImageArrayAsAnimatedGif(imageArray, GIFImage);
-		
-		addTextWatermarkToGif(imageArray, GIFImage, "dskjfhlsdjkfhlkd");
 	}
 	
 	public static void saveImageArrayAsAnimatedGif(BufferedImage[] images, File fileToSave) throws IOException
 	{
-        // ?��?�??GIFImage
         GifImage gifImage = new GifImage();
         
         // 設�?每張?��?秒數(微�? 100 = 1 sec)
         gifImage.setDefaultDelay(50);
         
-        // 嵌入註解
-        gifImage.addComment("Animated GIF image example");
-       
+        // 播放次數
+        gifImage.setLoopNumber(0);
+               
         // add images wrapped by GifFrame
         for (int i = 0; i < images.length; i++)
-            gifImage.addGifFrame(new GifFrame(images[i]));
-        
+        {        	
+        	GifFrame nextFrame = new GifFrame(images[i]);
+        	nextFrame.setDisposalMethod(GifFrame.DISPOSAL_METHOD_RESTORE_TO_BACKGROUND_COLOR);
+        	gifImage.addGifFrame(nextFrame);
+        }
+
         // save animated gif image
         GifEncoder.encode(gifImage, fileToSave);
 	}
 
-	public static void addTextWatermarkToGif(BufferedImage[] images, File fileToSave, String watermarkText)throws IOException
-	{
-		//水印?��??��?设置（�?体�??��??�大小�?颜色
-		TextPainter textPainter = new TextPainter(new Font("黑�?", Font.BOLD, 12));
-		textPainter.setOutlinePaint(Color.RED);
-		BufferedImage renderedWatermarkText = textPainter.renderString(watermarkText, true);
-		
-		//?��?对象
-		GifImage gf = GifDecoder.decode(fileToSave);
-		
-		//?��??��?大�?
-		int iw = gf.getScreenWidth();
-		int ih = gf.getScreenHeight();
-		
-		//?��?水印大�?
-		int tw = renderedWatermarkText.getWidth();
-		int th = renderedWatermarkText.getHeight();
-		
-		//水印位置
-		Point p = new Point();
-		p.x = iw - tw - 5;
-		p.y = ih - th - 4;
-		
-		//?�水??
-		Watermark watermark = new Watermark(renderedWatermarkText, p); 
-	
-		gf = watermark.apply(GifDecoder.decode(fileToSave), true);
-		
-		//输出
-		GifEncoder.encode(gf, fileToSave);
-	}
+	 public BufferedImage addTextWatermarkToImage(BufferedImage image, String text)
+	 {
+	       //create new TextPainter
+	       TextPainter textPainter = new TextPainter(new Font("Verdana", Font.BOLD, 10));
+	       textPainter.setOutlinePaint(Color.WHITE);
+	       
+	       //render the specified text outlined
+	       BufferedImage renderedWatermarkText = textPainter.renderString(text,true);
+	       
+	       //create new Watermark
+	       Watermark watermark =
+	               new Watermark(renderedWatermarkText, Watermark.LAYOUT_BOTTOM_RIGHT);
+	       //apply watermark to the specified image and return the result
+	       return watermark.apply(image);
+	 }
 }
