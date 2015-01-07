@@ -41,13 +41,6 @@ public class ImageGridViewArea extends JPanel {
 		this.commentArea = commentArea;
 
 		refresh();
-		/*new Thread(){
-			@Override
-			public void run() {
-				refresh();
-			}
-			
-		}.start();	*/
 
 	}
 	
@@ -125,11 +118,15 @@ public class ImageGridViewArea extends JPanel {
 			// get clicked pic
 			ThumbnailLabel targetPic = (ThumbnailLabel)e.getSource();			
 			
+			//save comment to image
 			((CommentArea) commentArea).setComment(selectedPicIndex);
 			
 			//get pic's index
 			selectedPicIndex = diplayedPic.indexOf(targetPic);
 			
+			//transfer image to edit area
+			
+			//update comment area to correspond image
 			((CommentArea)commentArea).getComment(selectedPicIndex);
 			refresh();
 		}

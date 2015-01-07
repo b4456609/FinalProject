@@ -65,7 +65,7 @@ public class Capture {
      }
     
      void createFolder(){
-    	System.out.println( "\n" + storagePath + "\n" + sdate );
+    	//System.out.println( "\n" + storagePath + "\n" + sdate );
     	 
         File f = new File( storagePath + sdate );
         if (f.mkdir()) {
