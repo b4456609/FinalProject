@@ -8,8 +8,18 @@ import javax.swing.border.TitledBorder;
 
 
 public class SettingParameter extends JFrame {
+	private String folderName = "";
+	
+	public String getFolderName() {
+		return folderName;
+	}
+
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
+	}
+
 	// auto panel ���
-	private boolean autoMode = true; // auto mode �桀����(true for time)
+	private boolean autoMode = false; // auto mode �桀����(true for time)
 	private int autoByTimeInterval = 5;
 
 	// hot key

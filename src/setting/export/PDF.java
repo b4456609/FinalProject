@@ -40,9 +40,9 @@ public class PDF {
 
 	// 讀取文字檔
 	private static String inputFile = "C:/Users/user/Desktop/JAVA/JAVA Project/javatest/memo0.txt";
-	private static int counter = 0;
+	private static int counter = 1;
 	// 產生一個A4大小的PDF檔案
-	private static Document document = new Document(PageSize.A4);
+	private Document document = new Document(PageSize.A4);
 
 	public PDF(ArrayList<PicContainer> pics, SettingParameter setting)
 			throws DocumentException {
@@ -56,11 +56,12 @@ public class PDF {
 
 			// 將document放入指定路徑
 			PdfWriter writer = PdfWriter.getInstance(document,
-					new FileOutputStream(setting.getPath() + "/test2.pdf"));
+					new FileOutputStream(setting.getPath() + setting.getFolderName() + "/export_" + counter++ +".pdf"));
 			document.open();
 
 			for (PicContainer pic : pics) {
 				Image image = Image.getInstance(pic.getPicture().toString());
+				image.scaleToFit(500, 500);
 				image.setAlignment(Element.ALIGN_CENTER);
 
 				// filedata放到paragraph的那層
@@ -69,8 +70,8 @@ public class PDF {
 				paragraph.setAlignment(Element.ALIGN_CENTER);
 
 				// 寫入document中
-				document.add(image);
 				document.add(addEmptyLine(paragraph, 3));
+				document.add(image);
 			}
 
 			// PDF 文件內容部分

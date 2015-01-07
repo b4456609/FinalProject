@@ -1,5 +1,6 @@
 package capture;
 
+import project.java2014.Bernie.MainWindow;
 import setting.export.SettingParameter;
 
 import com.melloware.jintellitype.HotkeyListener;  
@@ -27,8 +28,12 @@ public class HotkeyTest extends Capture implements HotkeyListener {
                 catcher();
                 break;   
             case KEY_2:   
-                System.out.println("stop");   
-                destroy();
+                System.out.println("stop"); 
+        		// new edit preview window
+        		MainWindow frame = new MainWindow(setting);
+        		frame.setVisible(true);
+                
+                
         }   
     }   
     

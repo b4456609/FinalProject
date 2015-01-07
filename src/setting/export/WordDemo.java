@@ -30,6 +30,7 @@ import com.lowagie.text.rtf.RtfWriter2;
 public class WordDemo {   
 	
 	private static String inputFile;
+	private static int counter = 1;
 	
 	public WordDemo(ArrayList<PicContainer> pics, SettingParameter setting)
 	{    
@@ -37,12 +38,13 @@ public class WordDemo {
 		{   
 			Document document = new Document(PageSize.A4);
 			
-			RtfWriter2.getInstance(document, new FileOutputStream(setting.getPath() + "/test2.doc"));
+			RtfWriter2.getInstance(document, new FileOutputStream(setting.getPath() + setting.getFolderName()  + "/export" + counter++ + ".doc"));
 			document.open();
 			
 			for (PicContainer pic : pics) {
 				Image image = Image.getInstance(pic.getPicture().toString());
 				image.setAlignment(1);
+				image.scaleToFit(500, 500);
 
 				// filedata放到paragraph的那層
 				Paragraph paragraph = new Paragraph(pic.getComment());

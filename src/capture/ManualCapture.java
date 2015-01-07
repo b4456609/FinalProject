@@ -16,6 +16,7 @@ public class ManualCapture extends Capture{
 
 	void start(){
         catchTime();
+        setting.setFolderName(sdate);
         createFolder();  
         mySignal();
         

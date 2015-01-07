@@ -25,10 +25,11 @@ import java.util.ArrayList;
 
 public class ExportGIF
 {
+	private static int counter = 1;
 	public ExportGIF(ArrayList<PicContainer> pics, SettingParameter setting) throws IOException
 	{
 		BufferedImage[] imageArray = new BufferedImage[pics.size()];
-		File GIFImage = new File(setting.getPath() +"/GIFImage.gif");
+		File GIFImage = new File(setting.getPath() + setting.getFolderName() +"/GIFImage"+ counter++ +".gif");
 		
 		int i = 0;
 		for (PicContainer pic : pics) 
@@ -71,7 +72,7 @@ public class ExportGIF
 	 public BufferedImage addTextWatermarkToImage(BufferedImage image, String text)
 	 {
 	       //create new TextPainter
-	       TextPainter textPainter = new TextPainter(new Font("Verdana", Font.BOLD, 10));
+	       TextPainter textPainter = new TextPainter(new Font("Verdana", Font.BOLD, 40));
 	       textPainter.setOutlinePaint(Color.WHITE);
 	       
 	       //render the specified text outlined

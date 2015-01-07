@@ -81,7 +81,7 @@ public class MainWindow extends JFrame {
 		setBounds(100, 100, 800, 470);
 		
 		//set data model
-		 picModel = new PicModel();
+		 picModel = new PicModel(settingParameter.getPath() + settingParameter.getFolderName());
 		 
 		//set menu bar
 		mainMenuBar();

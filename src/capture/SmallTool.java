@@ -1,4 +1,5 @@
 package capture;
+
 import java.awt.*;
 
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.lang.*;
 
 import javax.swing.ImageIcon;
 
+import project.java2014.Bernie.MainWindow;
 import setting.export.SettingParameter;
 
 public class SmallTool extends JFrame
@@ -16,13 +18,12 @@ public class SmallTool extends JFrame
 	private JButton stopButton;
 	private JButton screenCutButton;
 	private JButton settingButton;
-	private SettingParameter settingP;
+	private static SettingParameter settingParameter;
 	
-	public SmallTool(SettingParameter settingP)
+	public SmallTool(SettingParameter settingParameter)
 	{
 		super("SmallTool");
-		
-		this.settingP = settingP;
+		this.settingParameter = settingParameter;
 		
 		setLayout(new FlowLayout());
 		
@@ -47,14 +48,27 @@ public class SmallTool extends JFrame
 		stopButton.setBounds(120, 30 , 40, 40);
 		screenCutButton.setBounds(180, 30 , 40, 40);
 		settingButton.setBounds(240 , 30 , 40 , 40);
+		
+	}
+	
+	public void nextWindow(){
+		// new edit preview window
+		MainWindow frame = new MainWindow(settingParameter);
+		frame.setVisible(true);
+		
+		this.setVisible(false);
 	}
 	
 	private class startHandler implements ActionListener
 	{
 		public void actionPerformed( ActionEvent click)
 		{
+			
+			startButton.setEnabled(false);
+			settingButton.setEnabled(false);
+			screenCutButton.setEnabled(false);
 			System.out.printf("Start.");
-			AutoCapture autoCapture =  new AutoCapture(settingP);
+			AutoCapture autoCapture = new AutoCapture(settingParameter);
 			autoCapture.start();
 		}
 	}
@@ -63,7 +77,12 @@ public class SmallTool extends JFrame
 	{
 		public void actionPerformed( ActionEvent click)
 		{
+			startButton.setEnabled(true);
+			settingButton.setEnabled(true);
+			screenCutButton.setEnabled(true);
 			System.out.printf("Stop.");
+			
+			nextWindow();
 		}
 	}
 	
@@ -71,8 +90,12 @@ public class SmallTool extends JFrame
 	{
 		public void actionPerformed( ActionEvent click)
 		{
+			
+			startButton.setEnabled(false);
+			settingButton.setEnabled(false);
+			screenCutButton.setEnabled(false);
 			System.out.printf("ScreenCut.");
-			ManualCapture manualCapture =  new ManualCapture(settingP);
+			ManualCapture manualCapture = new ManualCapture(settingParameter);
 			manualCapture.start();
 		}
 	}

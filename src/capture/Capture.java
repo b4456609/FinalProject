@@ -31,7 +31,7 @@ public class Capture {
      
      int autoSecond; 
      
-     private SettingParameter setting;
+     protected SettingParameter setting;
      Scanner scanner = new Scanner(System.in);
      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
      
@@ -50,7 +50,7 @@ public class Capture {
         
      }        
      
-     void catcher(){
+     public void catcher(){
         data(num,"jpg");
         screenCatch();
         num++;     
@@ -92,10 +92,6 @@ public class Capture {
      
      void getautoSecond(){
          autoSecond = setting.getInterval();
-     }
-     
-	 String getPath(){
-         return (storagePath +  sdate + "\\");
      }
      
 }

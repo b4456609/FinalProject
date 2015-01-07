@@ -20,6 +20,7 @@ public class AutoCapture extends Capture {
 
 	void start() {
 		catchTime();
+        setting.setFolderName(sdate);
 		createFolder();
 		mySignal();
 		getautoSecond();
@@ -32,7 +33,7 @@ public class AutoCapture extends Capture {
 				} catch (Exception e) {
 				}
 		} else {
-			if (true/* 以秒數 */) {
+			if (setting.getAutoOption()) {
 				while (true) {
 					try {
 						catcher();
@@ -42,7 +43,7 @@ public class AutoCapture extends Capture {
 					}
 				}
 			} else { // 以點擊
-				// 缺這裡
+				new HandScreenShot(setting);
 			}
 		}
 	}
