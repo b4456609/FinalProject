@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 import project.java2014.Bernie.MainWindow;
 import setting.export.SettingParameter;
+import setting.export.actionTest;
 
 public class SmallTool extends JFrame
 {
@@ -105,6 +106,22 @@ public class SmallTool extends JFrame
 		public void actionPerformed( ActionEvent click)
 		{
 			System.out.printf("setting.");
+			try
+			{
+			    org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
+			    UIManager.put("RootPane.setupButtonVisible", false);
+			    // 改变InsetsUIResource参数的值即可实现 设置BeantuEye外观下JTabbedPane的左缩进
+			    UIManager.put("TabbedPane.tabAreaInsets", new javax.swing.plaf.InsetsUIResource(3,0,2,20));
+
+			    //设置属性即可：true表示使用ToolBar.background颜色实现纯
+			    //色填充背景，BeautyEye中此属性默认是false
+			    UIManager.put("ToolBar.isPaintPlainBackground", Boolean.TRUE);
+			}
+			catch(Exception ex)
+			{
+			    // TODO exception
+			}
+			new actionTest(settingParameter);
 		}
 	}
 	

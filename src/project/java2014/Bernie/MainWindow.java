@@ -189,7 +189,7 @@ public class MainWindow extends JFrame {
 				{
 				    // TODO exception
 				}
-				actionTest a = new actionTest(settingParameter);
+				new actionTest(settingParameter);
 				
 		    }
 		});

@@ -24,7 +24,7 @@ public class ImageGridViewArea extends JPanel {
 
 	private ArrayList<PicContainer> pics;
 	private ArrayList<ThumbnailLabel> diplayedPic = new ArrayList<ThumbnailLabel>();
-	private int selectedPicIndex = NULL_INDEX;
+	private int selectedPicIndex = 0;
 	private MouseListener itemClick = new itemClick();
 	private final PicModel picModel;
 
