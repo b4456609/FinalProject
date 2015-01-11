@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class PicModel {
 
-	//private String path = "D:\\我的圖片\\screenshots";
 	private String path = "D:\\Download\\pic";
 	private ArrayList<PicContainer> pics = new ArrayList<PicContainer>();
 
@@ -20,16 +19,15 @@ public class PicModel {
 		setPic();
 	}
 
-
 	// set picture form path
 	private void setPic() {
 		File picFinder = new File(path);
 		File[] files = picFinder.listFiles();
-		if(files != null){
-		for (File picPath : files) {
-			// add to array list
-			pics.add(new PicContainer(picPath));
-		}
+		if (files != null) {
+			for (File picPath : files) {
+				// add to array list
+				pics.add(new PicContainer(picPath));
+			}
 		}
 	}
 
@@ -61,12 +59,12 @@ public class PicModel {
 		pics.remove(index);
 		return true;
 	}
-	
-	public void setText(int index, String comment){
+
+	public void setText(int index, String comment) {
 		pics.get(index).setComment(comment);
 	}
-	
-	public String getText(int index){
+
+	public String getText(int index) {
 		return pics.get(index).getComment();
 	}
 }

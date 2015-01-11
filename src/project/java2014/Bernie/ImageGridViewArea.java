@@ -27,14 +27,18 @@ public class ImageGridViewArea extends JPanel {
 	private int selectedPicIndex = 0;
 	private MouseListener itemClick = new itemClick();
 	private final PicModel picModel;
+	private PicEditArea picEditPanel;
 
 	public static int NULL_INDEX = -100;
 	private final JScrollPane commentArea;
 	
 	/**
 	 * Create the panel.
+	 * @param picEditPanel 
 	 */	
-	public ImageGridViewArea(JScrollPane commentArea, PicModel picModel) {
+	public ImageGridViewArea(JScrollPane commentArea, PicModel picModel, JPanel picEditPanel) {
+		//set pic edit panel 
+		this.picEditPanel = (PicEditArea)picEditPanel;
 		//set pic model
 		this.picModel = picModel;
 
@@ -56,10 +60,19 @@ public class ImageGridViewArea extends JPanel {
 		
 		//get display pic from model
 		getPicDisplay();
+				
+		//set Edit picture
+		picEditPanel.setPicture(pics.get(selectedPicIndex).getPicture().toString());
 
 		int i = 1;
 		for(PicContainer pic:pics){
-			ImageIcon img = new ImageIcon(pic.getPicture().toString());
+
+			//flush imgae cache
+			ImageIcon img = new ImageIcon(pic.getPicture().toString());			
+			img.getImage().flush();
+			
+			//reload new image
+			img = new ImageIcon(pic.getPicture().toString());
 			ThumbnailLabel aImg = new ThumbnailLabel(img);
 			
 			//add click listener 
@@ -124,10 +137,14 @@ public class ImageGridViewArea extends JPanel {
 			//get pic's index
 			selectedPicIndex = diplayedPic.indexOf(targetPic);
 			
-			//transfer image to edit area
+			//savePicture
+			((PicEditArea)picEditPanel).savePicture();		
 			
 			//update comment area to correspond image
 			((CommentArea)commentArea).getComment(selectedPicIndex);
+						
+
+			
 			refresh();
 		}
 	}

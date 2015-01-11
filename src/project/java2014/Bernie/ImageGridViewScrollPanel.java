@@ -20,8 +20,9 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 
 	/**
 	 * Create the panel.
+	 * @param picEditPanel 
 	 */
-	public ImageGridViewScrollPanel(JScrollPane commentscrollPane, PicModel picModel) {
+	public ImageGridViewScrollPanel(JScrollPane commentscrollPane, PicModel picModel, JPanel picEditPanel) {		
 		//set pic model
 		this.picModel = picModel;
 				
@@ -29,7 +30,7 @@ public class ImageGridViewScrollPanel extends JScrollPane {
 		this.commentscrollPane = commentscrollPane;
 		
 		// new image grid view area
-		this.imageGridViewArea = new ImageGridViewArea(commentscrollPane, picModel);
+		this.imageGridViewArea = new ImageGridViewArea(commentscrollPane, picModel, picEditPanel);
 		
 		// set tool bar
 		toolbar();

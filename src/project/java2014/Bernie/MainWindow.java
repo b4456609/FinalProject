@@ -60,7 +60,7 @@ public class MainWindow extends JFrame {
 	private JScrollPane imageGridViewScrollPanel;
 	private JSplitPane mainVerticalSplit;
 	private JSplitPane splitPicuterComment;
-	private JPanel PicEditPanel;
+	private JPanel picEditPanel;
 	private JMenuBar menuBar;
 	private JMenu mnExport;
 	private JMenuItem mntmPdf;	
@@ -78,7 +78,7 @@ public class MainWindow extends JFrame {
 	public MainWindow(SettingParameter settingParameter) {
 		this.settingParameter = settingParameter;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 470);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
 		//set data model
 		 picModel = new PicModel(settingParameter.getPath() + settingParameter.getFolderName());
@@ -93,6 +93,7 @@ public class MainWindow extends JFrame {
 		
 		//initialize first for other view use
 		commentArea = new CommentArea(picModel);
+		picEditPanel = new PicEditArea();
 		
 		//call construct split panel
 		mainSplitPane();
@@ -106,8 +107,10 @@ public class MainWindow extends JFrame {
 		mainVerticalSplit.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		//create simple view bottom area
-		imageGridViewScrollPanel = new ImageGridViewScrollPanel(commentArea, picModel);
+		imageGridViewScrollPanel = new ImageGridViewScrollPanel(commentArea, picModel, picEditPanel);
 		mainVerticalSplit.setRightComponent(imageGridViewScrollPanel);
+		
+		mainVerticalSplit.setResizeWeight(0.9);
 		
 		contentPane.add(mainVerticalSplit, BorderLayout.CENTER);
 	}
@@ -117,19 +120,14 @@ public class MainWindow extends JFrame {
 		splitPicuterComment = new JSplitPane();
 		mainVerticalSplit.setLeftComponent(splitPicuterComment);
 		
-		//add comment area
-		
+		//add comment area		
 		splitPicuterComment.setRightComponent(commentArea);
 		
 		//add picture edit and preview area
-		editPicArea();
+		splitPicuterComment.setLeftComponent(picEditPanel);
+		splitPicuterComment.setResizeWeight(0.9);
 	}
 
-	//picture edit and preview area
-	private void editPicArea() {
-		PicEditPanel = new PicEditArea();
-		splitPicuterComment.setLeftComponent(PicEditPanel);
-	}
 
 	//main menu bar
 	private void mainMenuBar() {
