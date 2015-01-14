@@ -27,7 +27,7 @@ public class Capture {
      private int fileName;
      int num = 1; 
      String sdate = catchTime();
-     boolean mysignal;
+     static public boolean mysignal = false;
      
      int autoSecond; 
      
@@ -85,9 +85,8 @@ public class Capture {
      String name = this.fileName + "." + this.imageFormat;     
      }
        
-     void mySignal(){
-        //new smallTool().signal;  
-         boolean mysignal = true;
+     void mySignal(){  
+          mysignal = true;
     }
      
      void getautoSecond(){

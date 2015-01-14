@@ -21,7 +21,7 @@ public class actionTest extends JFrame {
 	private JToggleButton export = new JToggleButton("Export");
 	
 	// auto panel 的選項
-	private JRadioButton autoByTimeRadioButton = new JRadioButton("By Time", true);
+	private JRadioButton autoByTimeRadioButton = new JRadioButton("By Time (default)");
 	private JRadioButton autoByStepRadioButton = new JRadioButton("By Step");
 	private ButtonGroup autoButtonGroup = new ButtonGroup();
 	private JTextField autoByTimeDefaultSecText = new JTextField(2);

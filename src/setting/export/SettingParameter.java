@@ -19,8 +19,8 @@ public class SettingParameter extends JFrame {
 	}
 
 	// auto panel ���
-	private boolean autoMode = false; // auto mode �桀����(true for time)
-	private int autoByTimeInterval = 5;
+	private boolean autoMode = true; // auto mode �桀����(true for time)
+	private int autoByTimeInterval = 2;
 
 	// hot key
 	private int hotKeyScreenShotNumber = -1;

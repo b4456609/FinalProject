@@ -18,7 +18,7 @@ public class ManualCapture extends Capture{
         catchTime();
         setting.setFolderName(sdate);
         createFolder();  
-        mySignal();
+        //mySignal();
         
         
         if(mysignal){     //pause or not

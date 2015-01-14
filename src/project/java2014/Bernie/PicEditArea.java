@@ -59,6 +59,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -78,6 +79,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
+import java.awt.event.AdjustmentListener;
+import java.awt.event.AdjustmentEvent;
+
 
 import java.awt.image.BufferedImage; 
 import java.io.*; 
@@ -92,8 +96,8 @@ import java.io.File;
 
 
 
-public class PicEditArea extends JPanel implements ActionListener {
-	private String filesourse = "src\\test.jpg";
+public class PicEditArea extends JPanel implements ActionListener{
+	private String filesourse = "src\\bg.jpg";
 	private	String menuBar[]={"檔案(F)","編輯(E)","檢視(V)","說明(H)"};
 	private	String menuItem[][]={
 		{"開新檔案(N)|78","開啟舊檔(O)|79","儲存檔案(S)|83","另存新檔(A)","結束(X)|88"},
@@ -101,6 +105,7 @@ public class PicEditArea extends JPanel implements ActionListener {
 		{"工具箱(T)|84","色塊(C)|76","狀態列(S)","屬性欄(M)"},
 		{"關於小畫家(A)"}
 	};
+	
 	private	JMenuItem jMenuItem[][]=new JMenuItem[4][5];
 	private	JMenu jMenu[];
 	private	JCheckBoxMenuItem jCheckBoxMenuItem[] = new JCheckBoxMenuItem[4];
@@ -111,7 +116,7 @@ public class PicEditArea extends JPanel implements ActionListener {
 	private	JLabel jLabel[]=new JLabel[1];//狀態列
 	private	String toolname[]={"src/img/tool1.gif","src/img/tool2.gif","src/img/tool3.gif","src/img/tool4.gif","src/img/tool5.gif","src/img/tool8.gif","src/img/tool9.gif","src/img/tool7.gif","src/img/tool6.gif","src/img/tool10.gif","src/img/tool11.gif"};
 	private	Icon tool[]=new ImageIcon[11];
-	private	int i,j,show_x,show_y,drawMethod=7,draw_panel_width=700,draw_panel_height=700;
+	private	int i,j,show_x,show_y,drawMethod=7,draw_panel_width=1000,draw_panel_height=1000;
 	private Paint color_border,color_inside;
 	private SetPanel setPanel;
 	private DrawPanel drawPanel;
@@ -120,10 +125,17 @@ public class PicEditArea extends JPanel implements ActionListener {
 	private Stroke stroke;
 	private Shape shape;
 	private String isFilled;
+	private JScrollBar scrollBarVertical;
+	private JScrollBar scrollbarHorizontal;
+	private int x=0,y=0,temp_x,temp_y;
 	
 	public PicEditArea(){
 		//設定JMenuBar，並產生JMenuItem、並設置快捷鍵
+		java.awt.Dimension scr_size =
+				   java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		
+		draw_panel_width =scr_size.width;
+		draw_panel_height =scr_size.height;
 		this.setPreferredSize(new Dimension(640, 480));
 		JMenuBar bar = new JMenuBar();
 		jMenu=new JMenu[menuBar.length];
@@ -198,6 +210,9 @@ public class PicEditArea extends JPanel implements ActionListener {
 		underDrawPanel=new UnderDrawPanel();
 		underDrawPanel.setLayout(null);
 		underDrawPanel.add(drawPanel);
+		
+		
+		
 		drawPanel.setBounds(new Rectangle(2, 2, draw_panel_width, draw_panel_height));
 		
 		setPanel=new SetPanel();
@@ -217,9 +232,51 @@ public class PicEditArea extends JPanel implements ActionListener {
 		this.add(jPanel[0],BorderLayout.CENTER);
 		this.add(jLabel[0],BorderLayout.SOUTH);
 		
-		
-		
-		//show();
+		scrollBarVertical = new JScrollBar();
+		scrollbarHorizontal = new JScrollBar(Adjustable.HORIZONTAL);
+		scrollBarVertical.setPreferredSize(new Dimension(20, 200));
+	    scrollbarHorizontal.setPreferredSize(new Dimension(200, 20));
+	   
+	   // temp_y = draw_panel_height;
+	    
+	    
+	    scrollBarVertical.addAdjustmentListener(new AdjustmentListener() {
+	      public void adjustmentValueChanged(AdjustmentEvent ae) {
+	        if (scrollBarVertical.getValueIsAdjusting())
+	          return;
+	      if( ae.getValue() >= y  ){
+	    	  temp_y -= y;
+	    	  y= ae.getValue();
+	        drawPanel.setLocation(x,temp_y);
+	      }else {
+	    	
+	        y= ae.getValue();
+	        temp_y+=y;
+	        drawPanel.setLocation(x,temp_y);
+	      }
+	      }
+	    });
+
+	    scrollbarHorizontal.addAdjustmentListener(new AdjustmentListener() {
+	      public void adjustmentValueChanged(AdjustmentEvent ae){
+		      if( ae.getValue() >= x  ){
+		    	  temp_x -= x;
+		    	  x= ae.getValue();
+		        drawPanel.setLocation(temp_x,temp_y);
+		      }else {
+		    	
+		        x= ae.getValue();
+		        temp_x+=x;
+		        drawPanel.setLocation(temp_x,temp_y);
+		      }
+		      
+	      }
+	    });
+	    
+	    
+	    this.add(scrollBarVertical,BorderLayout.EAST);
+		this.add(scrollbarHorizontal,BorderLayout.SOUTH);
+			//show();
 	}
 	
 	public void actionPerformed( ActionEvent e ){
@@ -1019,15 +1076,13 @@ public class PicEditArea extends JPanel implements ActionListener {
             
             
     		Graphics2D g2d_bufImg_data = (Graphics2D) bufImg_data[count].getGraphics();
-    		g2d_bufImg_data.drawImage(bufImg,0,0,this);
-    
-    		
+    		g2d_bufImg_data.drawImage(bufImg,0,0,this);    		
     		drawPanel.setSize(bufImg_data[count].getWidth() ,bufImg_data[count].getHeight() );
     		
     		
 			repaint();
 		}
-		
+	
 		
 		public void save() throws IOException{
 			/*File file = new File(filename);  

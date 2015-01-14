@@ -20,32 +20,40 @@ public class AutoCapture extends Capture {
 
 	void start() {
 		catchTime();
-        setting.setFolderName(sdate);
+		setting.setFolderName(sdate);
 		createFolder();
-		mySignal();
+		//mySignal();
 		getautoSecond();
 
-		if (mysignal) { // pause or not
-			while (mysignal)
-				try {
-					Thread.sleep(1000);// ¹q¸£¼È°±¤@¬íÄÁ
-					System.out.println("stop");
-				} catch (Exception e) {
-				}
-		} else {
-			if (setting.getAutoOption()) {
-				while (true) {
-					try {
-						catcher();
-						Thread.sleep(autoSecond * 1000);
-					} catch (Exception e) {
-						e.printStackTrace();
+		Thread t2 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (mysignal) { // pause or not
+					while (mysignal)
+						try {
+							Thread.sleep(1000);// ï¿½qï¿½ï¿½ï¿½È°ï¿½ï¿½@ï¿½ï¿½ï¿½ï¿½
+							System.out.println("stop");
+						} catch (Exception e) {
+						}
+				} else {
+					boolean a = setting.getAutoOption();
+					System.out.println(a);
+					if (a) {
+						while (!mysignal) {
+							try {
+								catcher();
+								Thread.sleep(autoSecond * 1000);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					} else { // ï¿½Hï¿½Iï¿½ï¿½
+						new HandScreenShot(setting);
 					}
 				}
-			} else { // ¥HÂIÀ»
-				new HandScreenShot(setting);
 			}
-		}
+		});
+		t2.start();
 	}
 
 }

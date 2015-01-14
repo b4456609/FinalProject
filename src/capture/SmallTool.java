@@ -20,6 +20,9 @@ public class SmallTool extends JFrame
 	private JButton screenCutButton;
 	private JButton settingButton;
 	private static SettingParameter settingParameter;
+	//private boolean signal;
+	
+	
 	
 	public SmallTool(SettingParameter settingParameter)
 	{
@@ -49,7 +52,7 @@ public class SmallTool extends JFrame
 		stopButton.setBounds(120, 30 , 40, 40);
 		screenCutButton.setBounds(180, 30 , 40, 40);
 		settingButton.setBounds(240 , 30 , 40 , 40);
-		
+		Capture.mysignal = false;
 	}
 	
 	public void nextWindow(){
@@ -82,7 +85,7 @@ public class SmallTool extends JFrame
 			settingButton.setEnabled(true);
 			screenCutButton.setEnabled(true);
 			System.out.printf("Stop.");
-			
+			Capture.mysignal = true;
 			nextWindow();
 		}
 	}
