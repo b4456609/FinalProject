@@ -31,10 +31,10 @@ public class SmallTool extends JFrame
 		
 		setLayout(new FlowLayout());
 		
-		Icon start = new ImageIcon( "src/start.jpg");
-		Icon stop =new ImageIcon( "src/stop.jpg");
-		Icon cut = new ImageIcon( "src/handcut.jpg");
-		Icon setting = new ImageIcon( "src/setting.jpg");
+		Icon start = new ImageIcon( getClass().getResource("/icon/start.jpg"));
+		Icon stop =new ImageIcon( getClass().getResource("/icon/stop.jpg"));
+		Icon cut = new ImageIcon( getClass().getResource("/icon/handcut.jpg"));
+		Icon setting = new ImageIcon( getClass().getResource("/icon/setting.jpg"));
 
 		startButton = new JButton(start);
 		stopButton = new JButton(stop);

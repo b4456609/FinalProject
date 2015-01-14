@@ -114,7 +114,7 @@ public class PicEditArea extends JPanel implements ActionListener{
     private ButtonGroup buttonGroup;
 	private	JPanel jPanel[]=new JPanel[5];//0內層,1繪圖區,2工具箱,3色塊,4屬性欄
 	private	JLabel jLabel[]=new JLabel[1];//狀態列
-	private	String toolname[]={"src/img/tool1.gif","src/img/tool2.gif","src/img/tool3.gif","src/img/tool4.gif","src/img/tool5.gif","src/img/tool8.gif","src/img/tool9.gif","src/img/tool7.gif","src/img/tool6.gif","src/img/tool10.gif","src/img/tool11.gif"};
+	private	String toolname[]={"/img/tool1.gif","/img/tool2.gif","/img/tool3.gif","/img/tool4.gif","/img/tool5.gif","/img/tool8.gif","/img/tool9.gif","/img/tool7.gif","/img/tool6.gif","/img/tool10.gif","/img/tool11.gif"};
 	private	Icon tool[]=new ImageIcon[11];
 	private	int i,j,show_x,show_y,drawMethod=7,draw_panel_width=1000,draw_panel_height=1000;
 	private Paint color_border,color_inside;
@@ -179,7 +179,7 @@ public class PicEditArea extends JPanel implements ActionListener{
 		JToolBar jToolBar=new JToolBar("工具箱",JToolBar.VERTICAL);
 		jToggleButton=new JToggleButton[ButtonName.length];
 		for(i=0;i<ButtonName.length;i++){
-			tool[i] = new ImageIcon(toolname[i]);
+			tool[i] = new ImageIcon(   getClass().getResource(toolname[i])  );
 			jToggleButton[i] = new JToggleButton(tool[i]);
 			jToggleButton[i].addActionListener( this );
 			jToggleButton[i].setFocusable( false );

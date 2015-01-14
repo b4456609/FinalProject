@@ -18,10 +18,6 @@
 	<classpathentry kind="lib" path="lib/beautyeye_lnf.jar"/>
 	<classpathentry kind="lib" path="lib/gif4j_pro_trial_2.3.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.3.9.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JeItellite">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="FinalProject/lib"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JeItellite"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
