@@ -77,7 +77,10 @@ public class Capture {
      void screenCatch(){
          try {
              BufferedImage screen = (new Robot()).createScreenCapture(new Rectangle(0,0,(int)screenSize.getWidth(),(int)screenSize.getHeight()));
-             String name = this.fileName + "." + this.imageFormat;             
+             String name = "";
+             if(fileName < 10)
+            	 name += "0";
+             name += this.fileName + "." + this.imageFormat;             
              ImageIO.write(screen, this.imageFormat, new File(storagePath + sdate + "/" + name));            
          } catch (AWTException | IOException e) {
             System.out.println("Wrong \n" + e.getMessage());
