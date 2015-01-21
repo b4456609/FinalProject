@@ -55,6 +55,8 @@ public class ImageGridViewArea extends JPanel {
 		this.revalidate();
 		this.repaint();
 		
+		
+		
 		//remove array list
 		diplayedPic.clear();
 		
@@ -62,7 +64,11 @@ public class ImageGridViewArea extends JPanel {
 		getPicDisplay();
 				
 		//set Edit picture
-		picEditPanel.setPicture(pics.get(selectedPicIndex).getPicture().toString());
+		// delete picture index will be null 
+		if(selectedPicIndex != NULL_INDEX)
+			picEditPanel.setPicture(pics.get(selectedPicIndex).getPicture().toString());
+		else
+			picEditPanel.setPicture(pics.get(0).getPicture().toString());
 
 		int i = 1;
 		for(PicContainer pic:pics){
@@ -142,8 +148,6 @@ public class ImageGridViewArea extends JPanel {
 			
 			//update comment area to correspond image
 			((CommentArea)commentArea).getComment(selectedPicIndex);
-						
-
 			
 			refresh();
 		}

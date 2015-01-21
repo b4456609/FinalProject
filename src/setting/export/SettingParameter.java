@@ -27,7 +27,7 @@ public class SettingParameter extends JFrame {
 	private int hotKeyStopNumber = -1;
 	
 	// path
-	private String savePathInput = "D:/";
+	private String savePathInput;
 	
 	// export
 	private int exportGIFInterval = 2;
@@ -36,8 +36,29 @@ public class SettingParameter extends JFrame {
 	private int lastAutoByTimeInterval = 2;
 	private int lastHotKeyScreenShotNumber =-1;
 	private int lastHotKeyStopNumber = -1;
-	private String lastSavePathInput = "D:/";
-	private int lastExportGIFInterval = 5;	
+	private String lastSavePathInput;
+	private int lastExportGIFInterval = 5;
+	
+	public SettingParameter()
+	{
+		try
+		{
+			savePathInput = "C:/Users/" + System.getProperty("user.name") + "/Documents/截圖君/";
+			lastSavePathInput = savePathInput; 
+			
+			String filePath = getPath();
+			filePath = filePath.toString();
+			java.io.File myFilePath = new java.io.File(filePath);
+			if (!myFilePath.exists())
+				myFilePath.mkdir();
+	
+		}
+		catch(Exception e)
+		{
+			System.out.println("新建目錄操作出錯");
+			e.printStackTrace();
+		}
+	}
 	
 	// get the value of auto mode
 	public void setAutoOption(boolean autoOption)
@@ -146,8 +167,6 @@ public class SettingParameter extends JFrame {
 	{
 		lastHotKeyScreenShotNumber = number;
 	}
-	
-	
 	
 	public boolean getLastAutoOption()
 	{
