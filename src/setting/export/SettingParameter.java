@@ -50,7 +50,7 @@ public class SettingParameter extends JFrame {
 			filePath = filePath.toString();
 			java.io.File myFilePath = new java.io.File(filePath);
 			if (!myFilePath.exists())
-				myFilePath.mkdir();
+				myFilePath.mkdirs();
 	
 		}
 		catch(Exception e)
